@@ -1,20 +1,23 @@
 ---
-// Component imports and setup JavaScript go here!
+import MainHead from '../components/MainHead/index.astro';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<title>Welcome to perla.kitchen</title>
-		<style>
-			/* scoped CSS styles go here: */
-			/* h1 { ... } */
-		</style>
-	</head>
+	<MainHead />
 
-	<body>
-		<h1>Welcome to perla.kitchen</h1>
+	<body style="text-align: center;">
+		<h1>Food artist / blogger 🧑‍🍳🍽️</h1>
+		<h3>🌍 Lebanese 🇱🇧</h3>
+		<h3>📍Located in 🇪🇸</h3>
+		<br>
+		<span>Website coming soon!</span>
+		<br>
+		<span>You will be redirected to my social media platforms page...</span>
+
+		<script>
+			setTimeout(() => {
+				window.location.href = '/links';
+			}, 5000);
+		</script>
 	</body>
 </html>

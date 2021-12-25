@@ -1,0 +1,30 @@
+.main {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+.mainContainer {
+  color: #fff;
+  z-index: 10;
+  width: 320px;
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 0 28px 0 rgb(0 0 0 / 80%);
+  overflow: hidden;
+}
+
+.background {
+  filter: blur(50px);
+  background-size: cover;
+  transform: scale(1.1);
+  position: fixed;
+  width: 150% !important;
+  height: 150% !important;
+  background-position: center;
+  opacity: 0.95;
+}
+
+.list {
+  background: white;
+}
