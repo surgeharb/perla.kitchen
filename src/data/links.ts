@@ -15,7 +15,7 @@ const LINKS = [
     name: 'Youtube',
     logoImg: 'youtube.png',
     actionText: 'Visit',
-    url: 'https://www.youtube.com/channel/UC-lHJZR3Gqxm24_Vd_AJ5Yw',
+    url: 'https://www.youtube.com/channel/UCanE6_-pwq455Uld42OUdEg',
   },
 ];
 
