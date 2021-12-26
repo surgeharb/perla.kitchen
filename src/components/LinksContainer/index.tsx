@@ -12,8 +12,8 @@ const LinksContainer = () => (
     <section className={Styles.mainContainer}>
       <LinksHeader />
       <ul className={Styles.list}>
-        {LINKS.map(({ name, url, actionText, logoImg }) => (
-          <Link {...{ name, url, actionText, logoImg }} />
+        {LINKS.map(({ name, url, actionText, logoImg, logoWidth }) => (
+          <Link {...{ name, url, actionText, logoImg, logoWidth }} />
         ))}
       </ul>
     </section>

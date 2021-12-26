@@ -1,6 +1,6 @@
 import Styles from './styles.module.scss';
 
-const Button = ({ name, url, actionText, logoImg }) => (
+const Button = ({ name, url, actionText, logoImg, logoWidth = 128 }) => (
   <li className={Styles.container} id={name}>
     <div className={Styles.item}>
       <a
@@ -10,8 +10,8 @@ const Button = ({ name, url, actionText, logoImg }) => (
         className={Styles.anchor}
         service={name.toLowerCase()}
       >
-        <img src={`/images/logos/${logoImg}`} height="32" />
-        <div className={Styles.button}>{actionText}</div>
+        {logoImg && <img src={`/images/logos/${logoImg}`} height="32" width={logoWidth} />}
+        {actionText && <div className={Styles.button}>{actionText}</div>}
       </a>
     </div>
   </li>
