@@ -9,6 +9,7 @@ type Category = {
 interface CategoryArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
   category: Category;
   aspectRatio?: 'portrait' | 'square';
+  hideText?: boolean;
   width?: number;
   height?: number;
 }
@@ -19,11 +20,12 @@ export function CategoryArtwork({
   width,
   height,
   className,
+  hideText,
   ...props
 }: CategoryArtworkProps) {
   return (
     <div className={cn('space-y-3', className)} {...props}>
-      <div className="overflow-hidden rounded-full">
+      <div className="overflow-hidden rounded-lg">
         <Image
           src={category.cover}
           alt={category.name}
@@ -35,9 +37,11 @@ export function CategoryArtwork({
           )}
         />
       </div>
-      <div className="space-y-1 text-sm">
-        <h3 className="font-medium leading-none text-center">{category.name}</h3>
-      </div>
+      {!hideText && (
+        <div className="space-y-1 text-sm">
+          <h3 className="font-medium leading-none text-center">{category.name}</h3>
+        </div>
+      )}
     </div>
   );
 }

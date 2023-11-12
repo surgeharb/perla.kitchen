@@ -13,35 +13,36 @@ export const CategorySwiper = () => {
     <Swiper
       loop
       navigation
-      slidesPerView={2}
+      slidesPerView={3}
+      spaceBetween={16}
       modules={[Navigation]}
       breakpoints={{
         640: {
-          slidesPerView: 3,
-        },
-        768: {
           slidesPerView: 4,
         },
-        1024: {
+        768: {
           slidesPerView: 5,
         },
-        1280: {
+        1024: {
           slidesPerView: 6,
         },
-        1920: {
+        1280: {
           slidesPerView: 7,
         },
-        3840: {
+        1920: {
           slidesPerView: 8,
+        },
+        3840: {
+          slidesPerView: 9,
         },
       }}
     >
       {Array.from({ length: 10 }).map((_, i) => (
-        <SwiperSlide key={i} className="px-4 first:ps-8">
+        <SwiperSlide key={i}>
           <CategoryArtwork
             category={{
-              name: 'Rock',
-              cover: '/images/channel-banner.jpeg',
+              name: 'Apetizers',
+              cover: '/images/apetizers.jpeg',
             }}
             aspectRatio="square"
             className="w-[100%]"
