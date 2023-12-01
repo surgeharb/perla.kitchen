@@ -10,10 +10,16 @@ export function Footer() {
         <h2 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">
           Get recipes straight to your inbox!
         </h2>
-        <div className="w-full max-w-sm space-y-2">
+        <div className="w-full max-w-md space-y-2">
           <form className="flex space-x-2">
-            <Input className="max-w-lg flex-1" placeholder="Enter your email" type="email" />
-            <Button type="submit">Subscribe</Button>
+            <Input
+              className="max-w-lg flex-1 h-11 px-4 bg-white dark:bg-gray-800"
+              placeholder="Enter your email"
+              type="email"
+            />
+            <Button type="submit" size="lg">
+              Subscribe
+            </Button>
           </form>
         </div>
       </div>

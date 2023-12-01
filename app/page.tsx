@@ -3,6 +3,7 @@ import { CategorySwiper } from '@/components/category-swiper';
 import { CategoryArtwork } from '@/components/category-artwork';
 import { Button } from '@/components/ui/button';
 import { Footer } from '@/components/footer';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -36,7 +37,9 @@ export default function Home() {
             <div className="w-[30%]"></div>
           </div>
           <div>
-            <Button>Read More</Button>
+            <Link href="/blog">
+              <Button>Read More</Button>
+            </Link>
           </div>
         </div>
         <div className="max-w-sm flex flex-col gap-4">
