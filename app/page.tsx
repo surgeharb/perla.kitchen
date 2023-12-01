@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { CategorySwiper } from '@/components/category-swiper';
 import { CategoryArtwork } from '@/components/category-artwork';
 import { Button } from '@/components/ui/button';
+import { Footer } from '@/components/footer';
 
 export default function Home() {
   return (
@@ -122,6 +123,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }
