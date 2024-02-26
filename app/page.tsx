@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { CategorySwiper } from '@/components/category-swiper';
+import { CategoryCarousel } from '@/components/category-carousel';
 import { CategoryArtwork } from '@/components/category-artwork';
 import { Button } from '@/components/ui/button';
 import { Footer } from '@/components/footer';
@@ -17,7 +17,7 @@ export default function Home() {
         />
       </section>
       <section className="w-full">
-        <CategorySwiper />
+        <CategoryCarousel />
       </section>
       <section className="flex flex-wrap gap-12 px-6 lg:px-12 py-10">
         <div className="flex flex-col gap-4 flex-1 min-w-[330px]">
