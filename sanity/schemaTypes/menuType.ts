@@ -19,11 +19,5 @@ export const menuType = defineType({
       title: 'Description',
       type: 'text',
     }),
-    defineField({
-      name: 'recipes',
-      title: 'Recipes',
-      type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'recipe' }] }],
-    }),
   ],
 });
