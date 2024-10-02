@@ -20,6 +20,11 @@ export const recipeType = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'link',
+      title: 'Link',
+      type: 'url',
+    }),
+    defineField({
       name: 'ingredients',
       title: 'Ingredients',
       type: 'array',
