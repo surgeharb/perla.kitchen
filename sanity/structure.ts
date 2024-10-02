@@ -9,7 +9,7 @@ export const structure: StructureResolver = (S) =>
         .title('Food')
         .child(
           S.list()
-            .title('Recipes')
+            .title('Food')
             .items([
               S.documentTypeListItem('menu').title('Menus'),
               S.documentTypeListItem('meal').title('Meals'),

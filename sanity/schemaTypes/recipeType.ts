@@ -20,8 +20,8 @@ export const recipeType = defineType({
       type: 'text',
     }),
     defineField({
-      name: 'link',
-      title: 'Link',
+      name: 'youtubeLink',
+      title: 'Youtube Link',
       type: 'url',
     }),
     defineField({
