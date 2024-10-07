@@ -6,8 +6,8 @@ import { postType } from './postType';
 import { authorType } from './authorType';
 import { recipeType } from './recipeType';
 import { menuType } from './menuType';
-import { mealType } from './mealType';
+import { menuItemType } from './menuItemType';
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [blockContentType, categoryType, postType, authorType, recipeType, menuType, mealType],
+  types: [blockContentType, categoryType, postType, authorType, recipeType, menuType, menuItemType],
 };

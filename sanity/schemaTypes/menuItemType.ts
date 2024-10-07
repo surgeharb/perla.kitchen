@@ -1,16 +1,16 @@
 import { LemonIcon } from '@sanity/icons';
 import { defineField, defineType } from 'sanity';
 
-export const mealType = defineType({
-  name: 'meal',
-  title: 'Meal',
+export const menuItemType = defineType({
+  name: 'menuItem',
+  title: 'Menu Item',
   type: 'document',
   // @ts-ignore
   icon: LemonIcon,
   fields: [
     defineField({
       name: 'title',
-      title: 'Meal Title',
+      title: 'Item Name',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
