@@ -19,5 +19,14 @@ export const menuType = defineType({
       title: 'Description',
       type: 'text',
     }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
   ],
 });
