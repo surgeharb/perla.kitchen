@@ -26,7 +26,7 @@ export function Footer() {
       <div className="pt-8 grid gap-6 lg:grid-cols-3 lg:gap-12">
         <div className="flex flex-col items-center space-y-2 lg:items-start">
           <h3 className="text-2xl font-bold tracking-tighter sm:text-3xl md:text-4xl">
-            Perla's Kitchen
+            Perla&apos;s Kitchen
           </h3>
           <div className="flex space-x-2">
             <Button size="icon" variant="outline">

@@ -6,19 +6,6 @@ import { client } from '@/sanity/lib/client';
 import { groq } from 'next-sanity';
 import { Menu } from '@/sanity.types';
 
-async function getWeeklySpecials(): Promise<WeeklySpecial[]> {
-  return client.fetch(
-    groq`*[_type == "weeklySpecial"] {
-      day,
-      meals[] {
-        name,
-        description,
-        "image": image.asset->url
-      }
-    }`
-  );
-}
-
 async function getMenus(): Promise<Menu[]> {
   return client.fetch(
     groq`*[_type == "menu"] {
@@ -28,68 +15,34 @@ async function getMenus(): Promise<Menu[]> {
   );
 }
 
-// const weeklySpecials = {
-//   tuesday: [
-//     {
-//       name: 'Grilled Salmon',
-//       description: 'With lemon butter sauce and asparagus',
-//       image: '/images/apetizers.jpeg',
-//     },
-//     {
-//       name: 'Vegetarian Lasagna',
-//       description: 'Layers of pasta, vegetables, and cheese',
-//       image: '/images/apetizers.jpeg',
-//     },
-//   ],
-//   thursday: [
-//     {
-//       name: 'Chicken Stir-Fry',
-//       description: 'With mixed vegetables and teriyaki sauce',
-//       image: '/images/apetizers.jpeg',
-//     },
-//     {
-//       name: 'Chicken Stir-Fry',
-//       description: 'With mixed vegetables and teriyaki sauce',
-//       image: '/images/apetizers.jpeg',
-//     },
-//   ],
-// };
-
-// const categories = [
-//   {
-//     name: 'Desserts',
-//     image: '/images/apetizers.jpeg',
-//     href: '/menu/desserts',
-//   },
-//   {
-//     name: 'Salty',
-//     image: '/images/apetizers.jpeg',
-//     href: '/menu/salty',
-//   },
-//   {
-//     name: 'Daily Meals',
-//     image: '/images/apetizers.jpeg',
-//     href: '/menu/daily-meals',
-//   },
-//   {
-//     name: 'Appetizers',
-//     image: '/images/apetizers.jpeg',
-//     href: '/menu/appetizers',
-//   },
-//   {
-//     name: 'Drinks',
-//     image: '/images/apetizers.jpeg',
-//     href: '/menu/drinks',
-//   },
-//   {
-//     name: 'Specials',
-//     image: '/images/apetizers.jpeg',
-//     href: '/menu/specials',
-//   },
-// ];
+const weeklySpecials = {
+  tuesday: [
+    {
+      name: 'Grilled Salmon',
+      description: 'With lemon butter sauce and asparagus',
+      image: '/images/apetizers.jpeg',
+    },
+    {
+      name: 'Vegetarian Lasagna',
+      description: 'Layers of pasta, vegetables, and cheese',
+      image: '/images/apetizers.jpeg',
+    },
+  ],
+  thursday: [
+    {
+      name: 'Chicken Stir-Fry',
+      description: 'With mixed vegetables and teriyaki sauce',
+      image: '/images/apetizers.jpeg',
+    },
+    {
+      name: 'Chicken Stir-Fry',
+      description: 'With mixed vegetables and teriyaki sauce',
+      image: '/images/apetizers.jpeg',
+    },
+  ],
+};
 
 export default async function MenuListPage() {
-  const weeklySpecials = await getWeeklySpecials();
   const menus = await getMenus();
 
   const nextSpecialBaseOnDate = () => {
@@ -103,9 +56,8 @@ export default async function MenuListPage() {
     return 'tuesday';
   };
 
-  const currentSpecial = weeklySpecials.find(
-    (special) => special.day.toLowerCase() === nextSpecialBaseOnDate()
-  );
+  const currentSpecialDay = nextSpecialBaseOnDate();
+  const currentSpecial = weeklySpecials[currentSpecialDay];
 
   return (
     <main className="container mx-auto p-4">
@@ -114,7 +66,7 @@ export default async function MenuListPage() {
         <Link href="/menu/weekly-specials" className="block mb-6">
           <div className="bg-purple-200 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <div className="flex-shrink-0 flex">
-              {currentSpecial.meals.map((meal, index) => (
+              {currentSpecial.map((meal, index) => (
                 <div key={index} className="w-1/2 h-32 relative">
                   <Image src={meal.image} alt={meal.name} layout="fill" objectFit="cover" />
                 </div>
@@ -123,7 +75,7 @@ export default async function MenuListPage() {
             <div className="flex items-center">
               <div className="flex-grow p-4 flex justify-between items-center">
                 <h3 className="text-lg font-semibold text-purple-800">
-                  {currentSpecial.day}&apos;s Weekly Specials
+                  {currentSpecialDay}&apos;s Weekly Specials
                 </h3>
                 <ChevronRight className="text-purple-600" />
               </div>
