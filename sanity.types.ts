@@ -14,7 +14,7 @@
 
 // Source: schema.json
 export type SanityImagePaletteSwatch = {
-  _type: "sanity.imagePaletteSwatch";
+  _type: 'sanity.imagePaletteSwatch';
   background?: string;
   foreground?: string;
   population?: number;
@@ -22,7 +22,7 @@ export type SanityImagePaletteSwatch = {
 };
 
 export type SanityImagePalette = {
-  _type: "sanity.imagePalette";
+  _type: 'sanity.imagePalette';
   darkMuted?: SanityImagePaletteSwatch;
   lightVibrant?: SanityImagePaletteSwatch;
   darkVibrant?: SanityImagePaletteSwatch;
@@ -33,7 +33,7 @@ export type SanityImagePalette = {
 };
 
 export type SanityImageDimensions = {
-  _type: "sanity.imageDimensions";
+  _type: 'sanity.imageDimensions';
   height?: number;
   width?: number;
   aspectRatio?: number;
@@ -41,7 +41,7 @@ export type SanityImageDimensions = {
 
 export type SanityFileAsset = {
   _id: string;
-  _type: "sanity.fileAsset";
+  _type: 'sanity.fileAsset';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -62,7 +62,7 @@ export type SanityFileAsset = {
 };
 
 export type Geopoint = {
-  _type: "geopoint";
+  _type: 'geopoint';
   lat?: number;
   lng?: number;
   alt?: number;
@@ -70,7 +70,7 @@ export type Geopoint = {
 
 export type MenuItem = {
   _id: string;
-  _type: "menuItem";
+  _type: 'menuItem';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -81,37 +81,48 @@ export type MenuItem = {
   servingSize?: number;
   menu?: {
     _ref: string;
-    _type: "reference";
+    _type: 'reference';
     _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "menu";
+    [internalGroqTypeReferenceTo]?: 'menu';
   };
   image?: {
     asset?: {
       _ref: string;
-      _type: "reference";
+      _type: 'reference';
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
 };
 
 export type Menu = {
   _id: string;
-  _type: "menu";
+  _type: 'menu';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
   description?: string;
   slug?: Slug;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  };
 };
 
 export type Recipe = {
   _id: string;
-  _type: "recipe";
+  _type: 'recipe';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -123,42 +134,42 @@ export type Recipe = {
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote';
+    listItem?: 'bullet' | 'number';
     markDefs?: Array<{
       href?: string;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
   category?: {
     _ref: string;
-    _type: "reference";
+    _type: 'reference';
     _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "category";
+    [internalGroqTypeReferenceTo]?: 'category';
   };
   image?: {
     asset?: {
       _ref: string;
-      _type: "reference";
+      _type: 'reference';
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
 };
 
 export type Post = {
   _id: string;
-  _type: "post";
+  _type: 'post';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -166,65 +177,68 @@ export type Post = {
   slug?: Slug;
   author?: {
     _ref: string;
-    _type: "reference";
+    _type: 'reference';
     _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "author";
+    [internalGroqTypeReferenceTo]?: 'author';
   };
   mainImage?: {
     asset?: {
       _ref: string;
-      _type: "reference";
+      _type: 'reference';
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     alt?: string;
-    _type: "image";
+    _type: 'image';
   };
   categories?: Array<{
     _ref: string;
-    _type: "reference";
+    _type: 'reference';
     _weak?: boolean;
     _key: string;
-    [internalGroqTypeReferenceTo]?: "category";
+    [internalGroqTypeReferenceTo]?: 'category';
   }>;
   publishedAt?: string;
-  body?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-    _key: string;
-  }>;
+  body?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: 'span';
+          _key: string;
+        }>;
+        style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'blockquote';
+        listItem?: 'bullet';
+        markDefs?: Array<{
+          href?: string;
+          _type: 'link';
+          _key: string;
+        }>;
+        level?: number;
+        _type: 'block';
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: 'reference';
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: 'image';
+        _key: string;
+      }
+  >;
 };
 
 export type Author = {
   _id: string;
-  _type: "author";
+  _type: 'author';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -233,37 +247,37 @@ export type Author = {
   image?: {
     asset?: {
       _ref: string;
-      _type: "reference";
+      _type: 'reference';
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
     };
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    _type: "image";
+    _type: 'image';
   };
   bio?: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
-      _type: "span";
+      _type: 'span';
       _key: string;
     }>;
-    style?: "normal";
+    style?: 'normal';
     listItem?: never;
     markDefs?: Array<{
       href?: string;
-      _type: "link";
+      _type: 'link';
       _key: string;
     }>;
     level?: number;
-    _type: "block";
+    _type: 'block';
     _key: string;
   }>;
 };
 
 export type Category = {
   _id: string;
-  _type: "category";
+  _type: 'category';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -273,44 +287,47 @@ export type Category = {
 };
 
 export type Slug = {
-  _type: "slug";
+  _type: 'slug';
   current?: string;
   source?: string;
 };
 
-export type BlockContent = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-  listItem?: "bullet";
-  markDefs?: Array<{
-    href?: string;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-} | {
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-  };
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt?: string;
-  _type: "image";
-  _key: string;
-}>;
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: 'span';
+        _key: string;
+      }>;
+      style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'blockquote';
+      listItem?: 'bullet';
+      markDefs?: Array<{
+        href?: string;
+        _type: 'link';
+        _key: string;
+      }>;
+      level?: number;
+      _type: 'block';
+      _key: string;
+    }
+  | {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: 'image';
+      _key: string;
+    }
+>;
 
 export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
+  _type: 'sanity.imageCrop';
   top?: number;
   bottom?: number;
   left?: number;
@@ -318,7 +335,7 @@ export type SanityImageCrop = {
 };
 
 export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
+  _type: 'sanity.imageHotspot';
   x?: number;
   y?: number;
   height?: number;
@@ -327,7 +344,7 @@ export type SanityImageHotspot = {
 
 export type SanityImageAsset = {
   _id: string;
-  _type: "sanity.imageAsset";
+  _type: 'sanity.imageAsset';
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
@@ -349,14 +366,14 @@ export type SanityImageAsset = {
 };
 
 export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
+  _type: 'sanity.assetSourceData';
   name?: string;
   id?: string;
   url?: string;
 };
 
 export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
+  _type: 'sanity.imageMetadata';
   location?: Geopoint;
   dimensions?: SanityImageDimensions;
   palette?: SanityImagePalette;
@@ -366,5 +383,83 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | MenuItem | Menu | Recipe | Post | Author | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
+export type AllSanitySchemaTypes =
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityFileAsset
+  | Geopoint
+  | MenuItem
+  | Menu
+  | Recipe
+  | Post
+  | Author
+  | Category
+  | Slug
+  | BlockContent
+  | SanityImageCrop
+  | SanityImageHotspot
+  | SanityImageAsset
+  | SanityAssetSourceData
+  | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./sanity/queries/menu.tsx
+// Variable: QueryMenus
+// Query: *[_type == "menu"] {  title,  slug}
+export type QueryMenusResult = Array<{
+  title: string | null;
+  slug: Slug | null;
+}>;
+// Variable: QueryMenuItems
+// Query: *[_type == "menuItem" && menu->slug.current == $menu] {  _id,  title,  description,  slug,  price,  image,  menu -> {    title  }}
+export type QueryMenuItemsResult = Array<{
+  _id: string;
+  title: string | null;
+  description: string | null;
+  slug: Slug | null;
+  price: number | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  } | null;
+  menu: {
+    title: string | null;
+  } | null;
+}>;
+// Variable: QueryMenuItem
+// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  description,  servingSize,  price,  image}
+export type QueryMenuItemResult = {
+  _id: string;
+  title: string | null;
+  description: string | null;
+  servingSize: number | null;
+  price: number | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  } | null;
+} | null;
+
+// Query TypeMap
+import '@sanity/client';
+declare module '@sanity/client' {
+  interface SanityQueries {
+    '*[_type == "menu"] {\n  title,\n  slug\n}': QueryMenusResult;
+    '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
+    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  description,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
+  }
+}

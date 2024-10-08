@@ -2,17 +2,12 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { client } from '@/sanity/lib/client';
-import { groq } from 'next-sanity';
-import { Menu } from '@/sanity.types';
+import { client as sanityClient } from '@/sanity/lib/client';
+import { QueryMenus } from '@/sanity/queries/menu';
+import { QueryMenusResult } from '@/sanity.types';
 
-async function getMenus(): Promise<Menu[]> {
-  return client.fetch(
-    groq`*[_type == "menu"] {
-      title,
-      slug
-    }`
-  );
+async function getMenus(): Promise<QueryMenusResult> {
+  return sanityClient.fetch(QueryMenus);
 }
 
 const weeklySpecials = {
@@ -88,8 +83,7 @@ export default async function MenuListPage() {
           <Link
             key={index}
             href={`/menu/${menu.slug?.current}`}
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
-          >
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
             <div className="aspect-w-16 aspect-h-9">
               <Image
                 src="/images/apetizers.jpeg"

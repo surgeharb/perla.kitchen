@@ -2,43 +2,23 @@ import React from 'react';
 import Link from 'next/link';
 import { ChevronLeft, Info, ChevronRight } from 'lucide-react';
 import { client as sanityClient } from '@/sanity/lib/client';
-import { Menu, MenuItem } from '@/sanity.types';
-import { groq } from 'next-sanity';
+import { QueryMenuItemsResult } from '@/sanity.types';
 import imageUrlBuilder from '@sanity/image-url';
 import Image from 'next/image';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import { QueryMenuItems } from '@/sanity/queries/menu';
 
 const builder = imageUrlBuilder(sanityClient);
 
 const buildImage = (image: SanityImageSource) => builder.image(image).height(300).width(300);
 
-async function getMenu(menu: string): Promise<Menu> {
-  return sanityClient.fetch(
-    groq`*[_type == "menu" && slug.current == $menu][0] {
-      title,
-      slug
-    }`,
-    { menu }
-  );
-}
-
-async function getMenuItems(menu: string): Promise<MenuItem[]> {
-  return sanityClient.fetch(
-    groq`*[_type == "menuItem" && menu->slug.current == $menu] {
-      _id,
-      title,
-      description,
-      slug,
-      price,
-      image,
-      menu
-    }`,
-    { menu }
-  );
+async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
+  return sanityClient.fetch(QueryMenuItems, { menu });
 }
 
 export default async function MenuSinglePage({ params }: { params: { menu: string } }) {
-  const [menu, menuItems] = await Promise.all([getMenu(params.menu), getMenuItems(params.menu)]);
+  const menuItems = await getMenuItems(params.menu);
+  const menu = menuItems[0].menu;
 
   return (
     <div className="min-h-screen bg-purple-10">
@@ -48,7 +28,7 @@ export default async function MenuSinglePage({ params }: { params: { menu: strin
             <ChevronLeft />
             <span>Back</span>
           </Link>
-          <h1 className="text-2xl font-bold">{menu.title}</h1>
+          <h1 className="text-xl font-bold">{menu?.title}</h1>
         </div>
       </header>
 
@@ -58,8 +38,7 @@ export default async function MenuSinglePage({ params }: { params: { menu: strin
             <Link
               key={item._id}
               href={`/menu/${params.menu}/${item.slug?.current}`}
-              className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-            >
+              className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
               {!!item.image && (
                 <div className="relative aspect-square w-full">
                   <Image
@@ -73,7 +52,7 @@ export default async function MenuSinglePage({ params }: { params: { menu: strin
                 </div>
               )}
               <div className="p-3 flex-1 flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-purple-800">{item.title}</h2>
+                <h2 className="text-md font-semibold text-purple-800">{item.title}</h2>
                 <ChevronRight className="text-purple-600" />
               </div>
             </Link>
