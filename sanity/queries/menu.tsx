@@ -2,7 +2,8 @@ import { groq } from 'next-sanity';
 
 export const QueryMenus = groq`*[_type == "menu"] {
   title,
-  slug
+  slug,
+  image
 }`;
 
 export const QueryMenuItems = groq`*[_type == "menuItem" && menu->slug.current == $menu] {

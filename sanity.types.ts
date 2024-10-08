@@ -405,10 +405,21 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/queries/menu.tsx
 // Variable: QueryMenus
-// Query: *[_type == "menu"] {  title,  slug}
+// Query: *[_type == "menu"] {  title,  slug,  image}
 export type QueryMenusResult = Array<{
   title: string | null;
   slug: Slug | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: 'reference';
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: 'image';
+  } | null;
 }>;
 // Variable: QueryMenuItems
 // Query: *[_type == "menuItem" && menu->slug.current == $menu] {  _id,  title,  description,  slug,  price,  image,  menu -> {    title  }}
@@ -458,7 +469,7 @@ export type QueryMenuItemResult = {
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '*[_type == "menu"] {\n  title,\n  slug\n}': QueryMenusResult;
+    '*[_type == "menu"] {\n  title,\n  slug,\n  image\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  description,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
   }
