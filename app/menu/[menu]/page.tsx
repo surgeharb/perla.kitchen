@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { ChevronLeft, Info } from 'lucide-react';
+import { ChevronLeft, Info, ChevronRight } from 'lucide-react';
 import { client as sanityClient } from '@/sanity/lib/client';
-import { MenuItem } from '@/sanity.types';
+import { Menu, MenuItem } from '@/sanity.types';
 import { groq } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
 import Image from 'next/image';
@@ -11,6 +11,16 @@ import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 const builder = imageUrlBuilder(sanityClient);
 
 const buildImage = (image: SanityImageSource) => builder.image(image).height(300).width(300);
+
+async function getMenu(menu: string): Promise<Menu> {
+  return sanityClient.fetch(
+    groq`*[_type == "menu" && slug.current == $menu][0] {
+      title,
+      slug
+    }`,
+    { menu }
+  );
+}
 
 async function getMenuItems(menu: string): Promise<MenuItem[]> {
   return sanityClient.fetch(
@@ -28,7 +38,8 @@ async function getMenuItems(menu: string): Promise<MenuItem[]> {
 }
 
 export default async function MenuSinglePage({ params }: { params: { menu: string } }) {
-  const menuItems = await getMenuItems(params.menu);
+  const [menu, menuItems] = await Promise.all([getMenu(params.menu), getMenuItems(params.menu)]);
+
   return (
     <div className="min-h-screen bg-purple-10">
       <header className="bg-purple-500 text-white py-4">
@@ -37,16 +48,20 @@ export default async function MenuSinglePage({ params }: { params: { menu: strin
             <ChevronLeft />
             <span>Back</span>
           </Link>
-          <h1 className="text-2xl font-bold">{params.menu}</h1>
+          <h1 className="text-2xl font-bold">{menu.title}</h1>
         </div>
       </header>
 
       <main className="container mx-auto p-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           {menuItems.map((item) => (
-            <div key={item._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <Link
+              key={item._id}
+              href={`/menu/${params.menu}/${item.slug?.current}`}
+              className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+            >
               {!!item.image && (
-                <div className="relative aspect-square w-full max-w-md mx-auto">
+                <div className="relative aspect-square w-full">
                   <Image
                     src={buildImage(item.image).url()}
                     alt={item.title ?? 'Menu Item'}
@@ -57,20 +72,11 @@ export default async function MenuSinglePage({ params }: { params: { menu: strin
                   />
                 </div>
               )}
-              <div className="p-3 sm:p-4">
-                <h2 className="text-lg sm:text-xl font-semibold text-purple-800 mb-1 sm:mb-2">
-                  {item.title}
-                </h2>
-                <p className="text-gray-600 font-medium">{item.price || 0}€</p>
-                <Link
-                  href={`/menu/${params.menu}/${item.slug?.current}`}
-                  className="mt-2 sm:mt-4 inline-flex items-center text-purple-600 hover:text-purple-800 text-sm sm:text-base"
-                >
-                  <Info className="mr-1 sm:mr-2" size={16} />
-                  <span>View Details</span>
-                </Link>
+              <div className="p-3 flex-1 flex justify-between items-center">
+                <h2 className="text-lg font-semibold text-purple-800">{item.title}</h2>
+                <ChevronRight className="text-purple-600" />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </main>
