@@ -1,105 +1,117 @@
-'use client';
-
 import React from 'react';
 import Image from 'next/image';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { QueryWeeklyMeals } from '@/sanity/queries/menu';
+import { client as sanityClient } from '@/sanity/lib/client';
+import { QueryWeeklyMealsResult } from '@/sanity.types';
+import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import imageUrlBuilder from '@sanity/image-url';
+import { cn } from '@/lib/utils';
 
-const weeklyMeals = {
-  tuesday: [
-    {
-      name: 'Grilled Salmon',
-      description: 'With lemon butter sauce and asparagus',
-      image: '/images/apetizers.jpeg',
-    },
-    {
-      name: 'Vegetarian Lasagna',
-      description: 'Layers of pasta, vegetables, and cheese',
-      image: '/images/apetizers.jpeg',
-    },
-  ],
-  thursday: [
-    {
-      name: 'Chicken Stir-Fry',
-      description: 'With mixed vegetables and teriyaki sauce',
-      image: '/images/apetizers.jpeg',
-    },
-  ],
+const builder = imageUrlBuilder(sanityClient);
+
+const buildImage = (image: SanityImageSource) => builder.image(image).height(100).width(100);
+
+const getWeeklyMeals = async (): Promise<QueryWeeklyMealsResult | null> => {
+  const weeklyMeals = await sanityClient.fetch(QueryWeeklyMeals);
+  return weeklyMeals;
 };
 
-export default function WeeklySpecialsPage() {
+export default async function WeeklySpecialsPage() {
+  const weeklyMeals = await getWeeklyMeals();
+
+  if (!weeklyMeals) {
+    return <div>No weekly meals found</div>;
+  }
+
+  const day1Index = 0;
+  const day1 = 'Tuesday';
+  const day2Index = 1;
+  const day2 = 'Thursday';
+
   return (
     <div className="min-h-screen bg-purple-50">
-      <header className="bg-purple-500 text-white py-4">
-        <div className="pl-3 pr-5 flex justify-between items-center">
-          <Link href={`/menu`} className="flex items-center text-white hover:text-purple-200">
-            <ChevronLeft />
+      <header className="bg-purple-600 text-white py-4">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <Link href="/menu" className="flex items-center text-white hover:text-purple-200">
+            <ChevronLeft className="mr-2" />
             <span>Back to Menu</span>
           </Link>
           <h1 className="text-2xl font-bold">Weekly Specials</h1>
         </div>
       </header>
-      <main className="container mx-auto p-4">
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="text-2xl">Weekly Special Meals</CardTitle>
-            <CardDescription>
-              Enjoy our chef&apos;s selection every Tuesday and Thursday
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="tuesday">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="tuesday">Tuesday</TabsTrigger>
-                <TabsTrigger value="thursday">Thursday</TabsTrigger>
-              </TabsList>
-              <TabsContent value="tuesday">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {weeklyMeals.tuesday.map((meal, index) => (
-                    <Card key={index}>
-                      <CardContent className="p-0">
-                        <Image
-                          src={meal.image}
-                          alt={meal.name}
-                          width={300}
-                          height={200}
-                          className="w-full h-48 object-cover rounded-t-lg"
-                        />
-                        <div className="p-4">
-                          <h3 className="text-lg font-semibold mb-2">{meal.name}</h3>
-                          <p className="text-sm text-gray-600">{meal.description}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-              <TabsContent value="thursday">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {weeklyMeals.thursday.map((meal, index) => (
-                    <Card key={index}>
-                      <CardContent className="p-0">
-                        <Image
-                          src={meal.image}
-                          alt={meal.name}
-                          width={300}
-                          height={200}
-                          className="w-full h-48 object-cover rounded-t-lg"
-                        />
-                        <div className="p-4">
-                          <h3 className="text-lg font-semibold mb-2">{meal.name}</h3>
-                          <p className="text-sm text-gray-600">{meal.description}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+      <main className="container mx-auto p-4 flex flex-col gap-8">
+        <div key={day1}>
+          <h2 className="text-2xl font-bold text-purple-600 mb-4 capitalize">{day1}</h2>
+          {weeklyMeals.map(
+            (meal) =>
+              meal.menuItems &&
+              meal.menuItems.length > 0 && (
+                <Card key={meal._id} className="mb-4 overflow-hidden">
+                  <CardContent
+                    className={cn(
+                      'p-4 flex items-center',
+                      cn(day1Index % 2 === 0 ? 'flex' : 'flex-row-reverse'),
+                    )}>
+                    <div className="flex-grow pr-4">
+                      <h3 className="text-xl font-semibold mb-2">{meal.menuItems[0].title}</h3>
+                      <p className="text-gray-600 mb-2">Nice touch with the lemon</p>
+                      <p className="text-purple-600 font-bold text-lg">
+                        € {meal.menuItems[0].price}
+                      </p>
+                    </div>
+                    {meal.menuItems[0].image && (
+                      <Image
+                        src={buildImage(meal.menuItems[0].image).url()}
+                        alt={meal.menuItems[0].title ?? 'Meal'}
+                        width={100}
+                        height={100}
+                        className="w-24 h-24 object-cover rounded-lg"
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+              ),
+          )}
+        </div>
+        <div key={day2}>
+          <h2 className="text-2xl font-bold text-purple-600 mb-4 capitalize">{day2}</h2>
+          {weeklyMeals.map(
+            (meal) =>
+              meal.menuItems &&
+              meal.menuItems.length > 0 && (
+                <Card key={meal._id} className="mb-4 overflow-hidden">
+                  <CardContent
+                    className={cn(
+                      'p-4 flex items-center',
+                      cn(day2Index % 2 === 0 ? 'flex' : 'flex-row-reverse'),
+                    )}>
+                    <div className="flex-grow pr-4">
+                      <h3 className="text-xl font-semibold mb-2">{meal.menuItems[0].title}</h3>
+                      <p className="text-gray-600 mb-2">Nice touch with the lemon</p>
+                      <p className="text-purple-600 font-bold text-lg">
+                        € {meal.menuItems[0].price}
+                      </p>
+                    </div>
+                    {meal.menuItems[0].image && (
+                      <Image
+                        src={buildImage(meal.menuItems[0].image).url()}
+                        alt={meal.menuItems[0].title ?? 'Meal'}
+                        width={100}
+                        height={100}
+                        className="w-24 h-24 object-cover rounded-lg"
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+              ),
+          )}
+        </div>
+        <p className="text-center text-gray-600 text-lg">
+          Please order at least one day in advance
+        </p>
       </main>
     </div>
   );

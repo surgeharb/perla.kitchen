@@ -68,6 +68,24 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type WeeklyMeal = {
+  _id: string;
+  _type: 'weeklyMeal';
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  availableDate?: string;
+  menuItems?: Array<{
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: 'menuItem';
+  }>;
+};
+
 export type MenuItem = {
   _id: string;
   _type: 'menuItem';
@@ -389,6 +407,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | WeeklyMeal
   | MenuItem
   | Menu
   | Recipe
@@ -464,6 +483,30 @@ export type QueryMenuItemResult = {
     _type: 'image';
   } | null;
 } | null;
+// Variable: QueryWeeklyMeals
+// Query: *[_type == "weeklyMeal"] {  _id,  title,  availableDate,  menuItems[] -> {    _id,    title,    description,    price,    image  }}
+export type QueryWeeklyMealsResult = Array<{
+  _id: string;
+  title: string | null;
+  availableDate: string | null;
+  menuItems: Array<{
+    _id: string;
+    title: string | null;
+    description: string | null;
+    price: number | null;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    } | null;
+  }> | null;
+}>;
 
 // Query TypeMap
 import '@sanity/client';
@@ -472,5 +515,6 @@ declare module '@sanity/client' {
     '*[_type == "menu"] {\n  title,\n  slug,\n  image\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  description,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
+    '*[_type == "weeklyMeal"] {\n  _id,\n  title,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }
 }
