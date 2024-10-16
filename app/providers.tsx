@@ -10,6 +10,6 @@ if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
   });
 }
 
-export function CSPostHogProvider({ children }: { children: React.ReactNode }) {
+export function PHProvider({ children }: { children: React.ReactNode }) {
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
