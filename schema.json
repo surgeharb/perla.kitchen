@@ -382,6 +382,13 @@
         },
         "optional": true
       },
+      "price": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      },
       "menuItems": {
         "type": "objectAttribute",
         "value": {

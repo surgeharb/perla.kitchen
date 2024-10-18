@@ -1,19 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
-import { ChevronLeft, Info, ChevronRight } from 'lucide-react';
-import { client as sanityClient } from '@/sanity/lib/client';
-import { QueryMenuItemsResult } from '@/sanity.types';
-import imageUrlBuilder from '@sanity/image-url';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { QueryMenuItems } from '@/sanity/queries/menu';
+import { QueryMenuItemsResult } from '@/sanity.types';
 
-const builder = imageUrlBuilder(sanityClient);
-
-const buildImage = (image: SanityImageSource) => builder.image(image).height(300).width(300);
+const getMenuItemImage = (image: SanityImageSource) =>
+  buildSanityImageUrl(image, { height: 300, width: 300 });
 
 async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
-  return sanityClient.fetch(QueryMenuItems, { menu });
+  return sanityFetch({
+    query: QueryMenuItems,
+    params: { menu },
+  });
 }
 
 export default async function MenuSinglePage({ params }: { params: { menu: string } }) {
@@ -42,9 +43,9 @@ export default async function MenuSinglePage({ params }: { params: { menu: strin
               {!!item.image && (
                 <div className="relative aspect-square w-full">
                   <Image
-                    src={buildImage(item.image).url()}
+                    src={getMenuItemImage(item.image).url()}
                     alt={item.title ?? 'Menu Item'}
-                    blurDataURL={buildImage(item.image).blur(1).url()}
+                    blurDataURL={getMenuItemImage(item.image).blur(1).url()}
                     className="object-cover"
                     placeholder="blur"
                     fill

@@ -1,21 +1,17 @@
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
 import { QueryWeeklyMeals } from '@/sanity/queries/menu';
-import { client as sanityClient } from '@/sanity/lib/client';
+import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { QueryWeeklyMealsResult } from '@/sanity.types';
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import imageUrlBuilder from '@sanity/image-url';
 import { cn } from '@/lib/utils';
 
-const builder = imageUrlBuilder(sanityClient);
-
-const buildImage = (image: SanityImageSource) => builder.image(image).height(100).width(100);
-
 const getWeeklyMeals = async (): Promise<QueryWeeklyMealsResult | null> => {
-  const weeklyMeals = await sanityClient.fetch(QueryWeeklyMeals);
+  const weeklyMeals = await sanityFetch({
+    query: QueryWeeklyMeals,
+  });
   return weeklyMeals;
 };
 
@@ -58,13 +54,11 @@ export default async function WeeklySpecialsPage() {
                     <div className="flex-grow pr-4">
                       <h3 className="text-xl font-semibold mb-2">{meal.menuItems[0].title}</h3>
                       <p className="text-gray-600 mb-2">Nice touch with the lemon</p>
-                      <p className="text-purple-600 font-bold text-lg">
-                        € {meal.menuItems[0].price}
-                      </p>
+                      <p className="text-purple-600 font-bold text-lg">€ {meal.price}</p>
                     </div>
                     {meal.menuItems[0].image && (
                       <Image
-                        src={buildImage(meal.menuItems[0].image).url()}
+                        src={buildSanityImageUrl(meal.menuItems[0].image).url()}
                         alt={meal.menuItems[0].title ?? 'Meal'}
                         width={100}
                         height={100}
@@ -97,7 +91,7 @@ export default async function WeeklySpecialsPage() {
                     </div>
                     {meal.menuItems[0].image && (
                       <Image
-                        src={buildImage(meal.menuItems[0].image).url()}
+                        src={buildSanityImageUrl(meal.menuItems[0].image).url()}
                         alt={meal.menuItems[0].title ?? 'Meal'}
                         width={100}
                         height={100}

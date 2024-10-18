@@ -3,18 +3,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { ChevronLeft, Clock, Utensils } from 'lucide-react';
-import { client as sanityClient } from '@/sanity/lib/client';
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { QueryMenuItem } from '@/sanity/queries/menu';
 import { QueryMenuItemResult } from '@/sanity.types';
-import imageUrlBuilder from '@sanity/image-url';
-
-const builder = imageUrlBuilder(sanityClient);
-
-const buildImage = (image: SanityImageSource) => builder.image(image).height(500).width(500);
 
 async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | null> {
-  return sanityClient.fetch(QueryMenuItem, { slug });
+  return sanityFetch({
+    query: QueryMenuItem,
+    params: { slug },
+  });
 }
 
 export default async function ItemDetailsPage({
@@ -24,9 +21,14 @@ export default async function ItemDetailsPage({
 }) {
   const itemDetails = await getMenuItemDetails(params.item);
 
-  if (!itemDetails) {
+  if (!itemDetails || !itemDetails.image) {
     redirect('/404');
   }
+
+  const image = buildSanityImageUrl(itemDetails.image, { height: 500, width: 500 });
+
+  const imageUrl = image.url();
+  const blurDataUrl = image.blur(1).url();
 
   return (
     <div className="min-h-screen bg-purple-50">
@@ -47,9 +49,9 @@ export default async function ItemDetailsPage({
           {!!itemDetails.image && (
             <div className="relative aspect-square w-full max-w-md mx-auto">
               <Image
-                src={buildImage(itemDetails.image).url()}
+                src={imageUrl}
                 alt={itemDetails.title ?? 'Menu Item'}
-                blurDataURL={buildImage(itemDetails.image).blur(1).url()}
+                blurDataURL={blurDataUrl}
                 placeholder="blur"
                 className="object-cover"
                 fill

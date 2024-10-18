@@ -77,6 +77,7 @@ export type WeeklyMeal = {
   title?: string;
   slug?: Slug;
   availableDate?: string;
+  price?: number;
   menuItems?: Array<{
     _ref: string;
     _type: 'reference';
@@ -484,11 +485,12 @@ export type QueryMenuItemResult = {
   } | null;
 } | null;
 // Variable: QueryWeeklyMeals
-// Query: *[_type == "weeklyMeal"] {  _id,  title,  availableDate,  menuItems[] -> {    _id,    title,    description,    price,    image  }}
+// Query: *[_type == "weeklyMeal"] {  _id,  title,  availableDate,  price,  menuItems[] -> {    _id,    title,    description,    price,    image  }}
 export type QueryWeeklyMealsResult = Array<{
   _id: string;
   title: string | null;
   availableDate: string | null;
+  price: number | null;
   menuItems: Array<{
     _id: string;
     title: string | null;
@@ -515,6 +517,6 @@ declare module '@sanity/client' {
     '*[_type == "menu"] {\n  title,\n  slug,\n  image\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  description,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
-    '*[_type == "weeklyMeal"] {\n  _id,\n  title,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
+    '*[_type == "weeklyMeal"] {\n  _id,\n  title,\n  availableDate,\n  price,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }
 }

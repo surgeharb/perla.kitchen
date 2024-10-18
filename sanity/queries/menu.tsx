@@ -30,6 +30,7 @@ export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug
 export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {
   _id,
   title,
+  price,
   availableDate,
   menuItems[] -> {
     _id,

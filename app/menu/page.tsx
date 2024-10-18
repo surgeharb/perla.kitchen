@@ -1,19 +1,19 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { client as sanityClient } from '@/sanity/lib/client';
+import { ChevronRight } from 'lucide-react';
+import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
+import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { QueryMenus } from '@/sanity/queries/menu';
 import { QueryMenusResult } from '@/sanity.types';
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import imageUrlBuilder from '@sanity/image-url';
 
-const builder = imageUrlBuilder(sanityClient);
-
-const buildImage = (image: SanityImageSource) => builder.image(image).height(300).width(300);
+const getMenuImage = (image: SanityImageSource) =>
+  buildSanityImageUrl(image, { height: 300, width: 300 });
 
 async function getMenus(): Promise<QueryMenusResult> {
-  return sanityClient.fetch(QueryMenus);
+  return sanityFetch({
+    query: QueryMenus,
+  });
 }
 
 const weeklySpecials = {
@@ -93,9 +93,9 @@ export default async function MenuListPage() {
             {menu.image && (
               <div className="relative aspect-square w-full">
                 <Image
-                  src={buildImage(menu.image).url()}
+                  src={getMenuImage(menu.image).url()}
                   alt={menu.title ?? 'Menu'}
-                  blurDataURL={buildImage(menu.image).blur(1).url()}
+                  blurDataURL={getMenuImage(menu.image).blur(1).url()}
                   className="object-cover"
                   placeholder="blur"
                   fill
