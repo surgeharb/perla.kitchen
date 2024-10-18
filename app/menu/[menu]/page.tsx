@@ -19,6 +19,17 @@ async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
 
 export default async function MenuSinglePage({ params }: { params: { menu: string } }) {
   const menuItems = await getMenuItems(params.menu);
+
+  if (!menuItems || menuItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-purple-10">
+        <div className="container mx-auto p-4">
+          <h1 className="text-xl font-bold">No menu items found</h1>
+        </div>
+      </div>
+    );
+  }
+
   const menu = menuItems[0].menu;
 
   return (
