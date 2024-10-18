@@ -1,13 +1,13 @@
-export const apiVersion = '2024-10-02';
+export const apiVersion = new Date().toISOString().split('T')[0];
 
 export const dataset = assertValue(
   process.env.SANITY_STUDIO_DATASET || process.env.NEXT_PUBLIC_SANITY_DATASET,
-  'Missing environment variable for dataset'
+  'Missing environment variable for dataset',
 );
 
 export const projectId = assertValue(
   process.env.SANITY_STUDIO_PROJECT_ID || process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  'Missing environment variable for projectId'
+  'Missing environment variable for projectId',
 );
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
