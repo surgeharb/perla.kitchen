@@ -30,6 +30,13 @@ export const weeklyMealType = defineType({
       },
     }),
     defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      description: 'Price in euros',
+      initialValue: 10,
+    }),
+    defineField({
       name: 'menuItems',
       title: 'Items',
       type: 'array',
