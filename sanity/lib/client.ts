@@ -22,8 +22,8 @@ export const buildSanityImageUrl = (
 ) =>
   sanityImageUrlBuilder
     .image(image)
-    .height(options?.height ?? 100)
-    .width(options?.width ?? 100);
+    .height(options?.height ?? 256)
+    .width(options?.width ?? 256);
 
 export async function sanityFetch<const QueryString extends string>({
   query,

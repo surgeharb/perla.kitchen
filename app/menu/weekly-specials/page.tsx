@@ -1,18 +1,34 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
 import { ChevronLeft } from 'lucide-react';
 import { QueryWeeklyMeals } from '@/sanity/queries/menu';
-import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { QueryWeeklyMealsResult } from '@/sanity.types';
-import { cn } from '@/lib/utils';
+import { sanityFetch } from '@/sanity/lib/client';
+import { WeeklyMealCard } from './weekly-meal-card';
 
 const getWeeklyMeals = async (): Promise<QueryWeeklyMealsResult | null> => {
   const weeklyMeals = await sanityFetch({
     query: QueryWeeklyMeals,
   });
   return weeklyMeals;
+};
+
+const getNextTwoAvailableDates = (meals: QueryWeeklyMealsResult): string[] => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const availableDates = meals
+    .map((meal) => new Date(meal.availableDate ?? ''))
+    .filter((date) => date >= today)
+    .sort((a, b) => a.getTime() - b.getTime())
+    .map((date) => date.toISOString().split('T')[0]);
+
+  return Array.from(new Set(availableDates)).slice(0, 2);
+};
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 };
 
 export default async function WeeklySpecialsPage() {
@@ -22,10 +38,7 @@ export default async function WeeklySpecialsPage() {
     return <div>No weekly meals found</div>;
   }
 
-  const day1Index = 0;
-  const day1 = 'Tuesday';
-  const day2Index = 1;
-  const day2 = 'Thursday';
+  const nextTwoDates = getNextTwoAvailableDates(weeklyMeals);
 
   return (
     <div className="min-h-screen bg-purple-50">
@@ -38,74 +51,18 @@ export default async function WeeklySpecialsPage() {
           <h1 className="text-2xl font-bold">Weekly Specials</h1>
         </div>
       </header>
-      <main className="container mx-auto p-4 flex flex-col gap-8">
-        <div key={day1}>
-          <h2 className="text-2xl font-bold text-purple-600 mb-4 capitalize">{day1}</h2>
-          {weeklyMeals.map(
-            (meal) =>
-              meal.menuItems &&
-              meal.menuItems.length > 0 && (
-                <Card key={meal._id} className="mb-4 overflow-hidden">
-                  <CardContent
-                    className={cn(
-                      'p-4 flex items-center',
-                      cn(day1Index % 2 === 0 ? 'flex' : 'flex-row-reverse'),
-                    )}>
-                    <div className="flex-grow pr-4">
-                      <h3 className="text-xl font-semibold mb-2">{meal.menuItems[0].title}</h3>
-                      <p className="text-gray-600 mb-2">Nice touch with the lemon</p>
-                      <p className="text-purple-600 font-bold text-lg">€ {meal.price}</p>
-                    </div>
-                    {meal.menuItems[0].image && (
-                      <Image
-                        src={buildSanityImageUrl(meal.menuItems[0].image).url()}
-                        alt={meal.menuItems[0].title ?? 'Meal'}
-                        width={100}
-                        height={100}
-                        className="w-24 h-24 object-cover rounded-lg"
-                      />
-                    )}
-                  </CardContent>
-                </Card>
-              ),
-          )}
-        </div>
-        <div key={day2}>
-          <h2 className="text-2xl font-bold text-purple-600 mb-4 capitalize">{day2}</h2>
-          {weeklyMeals.map(
-            (meal) =>
-              meal.menuItems &&
-              meal.menuItems.length > 0 && (
-                <Card key={meal._id} className="mb-4 overflow-hidden">
-                  <CardContent
-                    className={cn(
-                      'p-4 flex items-center',
-                      cn(day2Index % 2 === 0 ? 'flex' : 'flex-row-reverse'),
-                    )}>
-                    <div className="flex-grow pr-4">
-                      <h3 className="text-xl font-semibold mb-2">{meal.menuItems[0].title}</h3>
-                      <p className="text-gray-600 mb-2">Nice touch with the lemon</p>
-                      <p className="text-purple-600 font-bold text-lg">
-                        € {meal.menuItems[0].price}
-                      </p>
-                    </div>
-                    {meal.menuItems[0].image && (
-                      <Image
-                        src={buildSanityImageUrl(meal.menuItems[0].image).url()}
-                        alt={meal.menuItems[0].title ?? 'Meal'}
-                        width={100}
-                        height={100}
-                        className="w-24 h-24 object-cover rounded-lg"
-                      />
-                    )}
-                  </CardContent>
-                </Card>
-              ),
-          )}
-        </div>
-        <p className="text-center text-gray-600 text-lg">
-          Please order at least one day in advance
-        </p>
+      <main className="container mx-auto px-4 py-6 flex flex-col gap-4">
+        {nextTwoDates.map((date, dateIndex) => (
+          <div key={date} className="flex flex-col gap-2">
+            <h2 className="text-xl font-bold text-purple-600 capitalize">{formatDate(date)}</h2>
+            {weeklyMeals
+              .filter((meal) => meal.availableDate === date)
+              .map((meal) => (
+                <WeeklyMealCard key={meal._id} meal={meal} isReversed={dateIndex % 2 === 0} />
+              ))}
+          </div>
+        ))}
+        <p className="text-center text-gray-600">Please order at least one day in advance</p>
       </main>
     </div>
   );

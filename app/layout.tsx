@@ -1,9 +1,11 @@
+import React from 'react';
 import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import dynamic from 'next/dynamic';
 
+import { WhatsAppFAB } from '@/components/whatsapp-fab';
 import { MainNav } from '@/components/main-nav';
 import { cn } from '@/lib/utils';
 
@@ -33,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
           {SHOW_MAIN_NAV && <MainNav />}
           {children}
+          <WhatsAppFAB />
           <PostHogPageView />
         </body>
       </PHProvider>
