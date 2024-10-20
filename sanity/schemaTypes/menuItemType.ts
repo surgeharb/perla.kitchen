@@ -36,7 +36,7 @@ export const menuItemType = defineType({
     defineField({
       name: 'servingSize',
       title: 'Serving Size',
-      type: 'number',
+      type: 'string',
     }),
     defineField({
       name: 'menu',

@@ -104,9 +104,13 @@ export type MenuItem = {
   _rev: string;
   title?: string;
   slug?: Slug;
-  description?: string;
+  description?: Array<
+    {
+      _key: string;
+    } & InternationalizedArrayTextValue
+  >;
   price?: number;
-  servingSize?: number;
+  servingSize?: string;
   menu?: {
     _ref: string;
     _type: 'reference';
@@ -482,7 +486,11 @@ export type QueryMenusResult = Array<{
 export type QueryMenuItemsResult = Array<{
   _id: string;
   title: string | null;
-  description: string | null;
+  description: Array<
+    {
+      _key: string;
+    } & InternationalizedArrayTextValue
+  > | null;
   slug: Slug | null;
   price: number | null;
   image: {
@@ -501,12 +509,12 @@ export type QueryMenuItemsResult = Array<{
   } | null;
 }>;
 // Variable: QueryMenuItem
-// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  description,  servingSize,  price,  image}
+// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  "description": description[_key == $language][0].value,  servingSize,  price,  image}
 export type QueryMenuItemResult = {
   _id: string;
   title: string | null;
   description: string | null;
-  servingSize: number | null;
+  servingSize: string | null;
   price: number | null;
   image: {
     asset?: {
@@ -531,7 +539,11 @@ export type QueryWeeklyMealsResult = Array<{
   menuItems: Array<{
     _id: string;
     title: string | null;
-    description: string | null;
+    description: Array<
+      {
+        _key: string;
+      } & InternationalizedArrayTextValue
+    > | null;
     price: number | null;
     image: {
       asset?: {
@@ -553,7 +565,7 @@ declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
-    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  description,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
+    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
     '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }
 }

@@ -525,7 +525,22 @@
       "description": {
         "type": "objectAttribute",
         "value": {
-          "type": "string"
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "internationalizedArrayTextValue"
+            }
+          }
         },
         "optional": true
       },
@@ -539,7 +554,7 @@
       "servingSize": {
         "type": "objectAttribute",
         "value": {
-          "type": "number"
+          "type": "string"
         },
         "optional": true
       },

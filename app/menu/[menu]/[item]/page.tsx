@@ -2,15 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { ChevronLeft, Clock, Utensils } from 'lucide-react';
+import { ChevronLeft, Utensils } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { QueryMenuItem } from '@/sanity/queries/menu';
 import { QueryMenuItemResult } from '@/sanity.types';
 
+const LANGUAGE = 'en';
+
 async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | null> {
   return sanityFetch({
     query: QueryMenuItem,
-    params: { slug },
+    params: { slug, language: LANGUAGE },
   });
 }
 
@@ -67,14 +69,10 @@ export default async function ItemDetailsPage({
             </div>
             <p className="text-gray-600 mb-6">{itemDetails.description}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div className="flex items-center">
-                <Clock className="text-purple-600 mr-2" />
-                <span>Preparation Time: 1 day</span>
-              </div>
               {itemDetails.servingSize && (
-                <div className="flex items-center">
-                  <Utensils className="text-purple-600 mr-2" />
-                  <span>Calories: {itemDetails.servingSize}</span>
+                <div className="flex items-center gap-2">
+                  <Utensils className="text-purple-600" />
+                  <span>{itemDetails.servingSize}</span>
                 </div>
               )}
             </div>
