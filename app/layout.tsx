@@ -16,9 +16,7 @@ const fontSans = FontSans({
   variable: '--font-sans',
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : 'http://localhost:3000';
+const baseUrl = 'https://www.perla.kitchen';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
