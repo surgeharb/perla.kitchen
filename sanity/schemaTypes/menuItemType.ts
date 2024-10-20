@@ -26,7 +26,7 @@ export const menuItemType = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'internationalizedArrayText',
     }),
     defineField({
       name: 'price',
