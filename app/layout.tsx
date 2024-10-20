@@ -24,10 +24,10 @@ export const metadata: Metadata = {
   description:
     "Perla is a professional chef and owner of Perla's Kitchen. She sells authentic Lebanese desserts and meals, bringing the taste of home to your table.",
   openGraph: {
-    images: [`${baseUrl}/images/white-bg-logo-square.jpg`],
+    images: [`${baseUrl}/images/white-bg-logo-square-200.jpg`],
   },
   twitter: {
-    images: [`${baseUrl}/images/white-bg-logo-square.jpg`],
+    images: [`${baseUrl}/images/white-bg-logo-square-200.jpg`],
   },
 };
 
