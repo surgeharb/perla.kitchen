@@ -16,10 +16,21 @@ const fontSans = FontSans({
   variable: '--font-sans',
 });
 
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
+
 export const metadata: Metadata = {
-  title: "Perla's Kitchen - Delicious Recipes",
+  metadataBase: new URL(baseUrl),
+  title: "Perla's Kitchen - Authentic Lebanese Flavours",
   description:
-    "Perla is a professional self-taught chef and owner of Perla's Kitchen. She specializes in creating delicious recipes that are perfect for any occasion",
+    "Perla is a professional self-taught chef and owner of Perla's Kitchen. She creates and sells authentic Lebanese desserts and meals, bringing the taste of home to your table.",
+  openGraph: {
+    images: ['/images/white-bg-logo.jpg'],
+  },
+  twitter: {
+    images: ['/images/white-bg-logo.jpg'],
+  },
 };
 
 const SHOW_MAIN_NAV = false;
