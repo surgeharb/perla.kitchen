@@ -46,10 +46,11 @@ export default async function MenuListPage() {
             <div className="flex-shrink-0 flex">
               <div className="w-full h-32 relative">
                 <Image
-                  src="/images/channel-banner.jpeg"
+                  src="/images/menu-banner.jpeg"
                   alt="Weekly Menu"
                   layout="fill"
                   objectFit="cover"
+                  objectPosition="center 35%"
                 />
               </div>
             </div>
