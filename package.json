@@ -6,7 +6,8 @@
     "dev": "next dev --port 7128",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sanity:types": "sanity schema extract && sanity typegen generate"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -29,6 +30,7 @@
     "react": "^18",
     "react-dom": "^18",
     "sanity": "3",
+    "sanity-plugin-internationalized-array": "^3.0.1",
     "styled-components": "6",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"

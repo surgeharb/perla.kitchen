@@ -11,7 +11,12 @@ export const weeklyMealType = defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'internationalizedArrayString',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'internationalizedArrayText',
     }),
     defineField({
       name: 'slug',

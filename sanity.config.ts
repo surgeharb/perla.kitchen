@@ -7,6 +7,7 @@
 import { visionTool } from '@sanity/vision';
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
+import { internationalizedArray } from 'sanity-plugin-internationalized-array';
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from './sanity/env';
@@ -24,5 +25,15 @@ export default defineConfig({
     // Vision is for querying with GROQ from inside the Studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
+    // Internationalized Array Fields
+    // https://github.com/sanity-io/sanity-plugin-internationalized-array
+    internationalizedArray({
+      languages: [
+        { id: 'en', title: 'English' },
+        { id: 'ar', title: 'Arabic' },
+      ],
+      defaultLanguages: ['en'],
+      fieldTypes: ['string', 'text'],
+    }),
   ],
 });

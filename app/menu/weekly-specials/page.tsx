@@ -6,9 +6,14 @@ import { QueryWeeklyMealsResult } from '@/sanity.types';
 import { sanityFetch } from '@/sanity/lib/client';
 import { WeeklyMealCard } from './weekly-meal-card';
 
+const LANGUAGE = 'en';
+
 const getWeeklyMeals = async (): Promise<QueryWeeklyMealsResult | null> => {
   const weeklyMeals = await sanityFetch({
     query: QueryWeeklyMeals,
+    params: {
+      language: LANGUAGE,
+    },
   });
   return weeklyMeals;
 };

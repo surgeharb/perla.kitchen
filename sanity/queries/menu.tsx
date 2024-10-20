@@ -1,6 +1,7 @@
 import { groq } from 'next-sanity';
 
 export const QueryMenus = groq`*[_type == "menu"] {
+  _id,
   title,
   slug,
   image
@@ -29,7 +30,8 @@ export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug
 
 export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {
   _id,
-  title,
+  "title": title[_key == $language][0].value,
+  "description": description[_key == $language][0].value,
   price,
   availableDate,
   menuItems[] -> {

@@ -74,7 +74,16 @@ export type WeeklyMeal = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: string;
+  title?: Array<
+    {
+      _key: string;
+    } & InternationalizedArrayStringValue
+  >;
+  description?: Array<
+    {
+      _key: string;
+    } & InternationalizedArrayTextValue
+  >;
   slug?: Slug;
   availableDate?: string;
   price?: number;
@@ -402,6 +411,28 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
+export type InternationalizedArrayTextValue = {
+  _type: 'internationalizedArrayTextValue';
+  value?: string;
+};
+
+export type InternationalizedArrayStringValue = {
+  _type: 'internationalizedArrayStringValue';
+  value?: string;
+};
+
+export type InternationalizedArrayText = Array<
+  {
+    _key: string;
+  } & InternationalizedArrayTextValue
+>;
+
+export type InternationalizedArrayString = Array<
+  {
+    _key: string;
+  } & InternationalizedArrayStringValue
+>;
+
 export type AllSanitySchemaTypes =
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -421,12 +452,17 @@ export type AllSanitySchemaTypes =
   | SanityImageHotspot
   | SanityImageAsset
   | SanityAssetSourceData
-  | SanityImageMetadata;
+  | SanityImageMetadata
+  | InternationalizedArrayTextValue
+  | InternationalizedArrayStringValue
+  | InternationalizedArrayText
+  | InternationalizedArrayString;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/queries/menu.tsx
 // Variable: QueryMenus
-// Query: *[_type == "menu"] {  title,  slug,  image}
+// Query: *[_type == "menu"] {  _id,  title,  slug,  image}
 export type QueryMenusResult = Array<{
+  _id: string;
   title: string | null;
   slug: Slug | null;
   image: {
@@ -485,12 +521,13 @@ export type QueryMenuItemResult = {
   } | null;
 } | null;
 // Variable: QueryWeeklyMeals
-// Query: *[_type == "weeklyMeal"] {  _id,  title,  availableDate,  price,  menuItems[] -> {    _id,    title,    description,    price,    image  }}
+// Query: *[_type == "weeklyMeal"] {  _id,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    price,    image  }}
 export type QueryWeeklyMealsResult = Array<{
   _id: string;
   title: string | null;
-  availableDate: string | null;
+  description: string | null;
   price: number | null;
+  availableDate: string | null;
   menuItems: Array<{
     _id: string;
     title: string | null;
@@ -514,9 +551,9 @@ export type QueryWeeklyMealsResult = Array<{
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '*[_type == "menu"] {\n  title,\n  slug,\n  image\n}': QueryMenusResult;
+    '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  description,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
-    '*[_type == "weeklyMeal"] {\n  _id,\n  title,\n  availableDate,\n  price,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
+    '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }
 }
