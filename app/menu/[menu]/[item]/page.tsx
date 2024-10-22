@@ -16,11 +16,12 @@ async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | n
   });
 }
 
-export default async function ItemDetailsPage({
-  params,
-}: {
-  params: { menu: string; item: string };
-}) {
+export default async function ItemDetailsPage(
+  props: {
+    params: Promise<{ menu: string; item: string }>;
+  }
+) {
+  const params = await props.params;
   const itemDetails = await getMenuItemDetails(params.item);
 
   if (!itemDetails || !itemDetails.image) {

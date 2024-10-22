@@ -17,7 +17,8 @@ async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
   });
 }
 
-export default async function MenuSinglePage({ params }: { params: { menu: string } }) {
+export default async function MenuSinglePage(props: { params: Promise<{ menu: string }> }) {
+  const params = await props.params;
   const menuItems = await getMenuItems(params.menu);
 
   if (!menuItems || menuItems.length === 0) {

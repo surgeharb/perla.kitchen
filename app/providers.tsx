@@ -2,6 +2,7 @@
 
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
+import dynamic from 'next/dynamic';
 
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
@@ -14,3 +15,10 @@ if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
 export function PHProvider({ children }: { children: React.ReactNode }) {
   return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
 }
+
+export const PostHogPageViewDynamic = dynamic(
+  () => import('./pageview').then((module) => module.default),
+  {
+    ssr: false,
+  },
+);
