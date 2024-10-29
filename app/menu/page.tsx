@@ -38,10 +38,10 @@ export default async function MenuListPage() {
   );
 
   return (
-    <main className="container mx-auto p-4">
-      <h2 className="text-3xl font-bold text-purple-800 mb-6">Our Menu</h2>
+    <main className="container mx-auto p-4 flex flex-col gap-4">
+      <h2 className="text-3xl font-bold text-purple-800">Our Menu</h2>
       {currentDateMeals.length > 0 && (
-        <Link href="/menu/weekly-specials" className="block mb-6">
+        <Link href="/menu/weekly-specials" className="block">
           <div className="bg-purple-200 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <div className="flex-shrink-0 flex">
               <div className="w-full h-32 relative">

@@ -1,6 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
 import { QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getNextAvailableDates } from '@/lib/date';
@@ -36,29 +34,18 @@ export default async function WeeklySpecialsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-purple-50">
-      <header className="bg-purple-600 text-white py-4">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <Link href="/menu" className="flex items-center text-white hover:text-purple-200">
-            <ChevronLeft className="mr-2" />
-            <span>Back to Menu</span>
-          </Link>
-          <h1 className="text-2xl font-bold">Weekly Menu</h1>
+    <section className="container mx-auto px-4 py-6 flex flex-col gap-4">
+      {nextTwoDates.map((date, dateIndex) => (
+        <div key={date.toISOString()} className="flex flex-col gap-2">
+          <h2 className="text-xl font-bold text-purple-600 capitalize">{formatDate(date)}</h2>
+          {weeklyMeals
+            .filter((meal) => areDatesEqual(meal.availableDate || '', date))
+            .map((meal) => (
+              <WeeklyMealCard key={meal._id} meal={meal} isReversed={dateIndex % 2 === 0} />
+            ))}
         </div>
-      </header>
-      <main className="container mx-auto px-4 py-6 flex flex-col gap-4">
-        {nextTwoDates.map((date, dateIndex) => (
-          <div key={date.toISOString()} className="flex flex-col gap-2">
-            <h2 className="text-xl font-bold text-purple-600 capitalize">{formatDate(date)}</h2>
-            {weeklyMeals
-              .filter((meal) => areDatesEqual(meal.availableDate || '', date))
-              .map((meal) => (
-                <WeeklyMealCard key={meal._id} meal={meal} isReversed={dateIndex % 2 === 0} />
-              ))}
-          </div>
-        ))}
-        <p className="text-center text-gray-600">Please order at least one day in advance</p>
-      </main>
-    </div>
+      ))}
+      <p className="text-center text-gray-600">Please order at least one day in advance</p>
+    </section>
   );
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { QueryMenuItems } from '@/sanity/queries/menu';
 import { QueryMenuItemsResult } from '@/sanity.types';
+import { MenuHeader } from '@/components/menu-header';
 
 const getMenuItemImage = (image: SanityImageSource) =>
   buildSanityImageUrl(image, { height: 300, width: 300 });
@@ -34,18 +35,9 @@ export default async function MenuSinglePage(props: { params: Promise<{ menu: st
   const menu = menuItems[0].menu;
 
   return (
-    <div className="min-h-screen bg-purple-10">
-      <header className="bg-purple-500 text-white py-4">
-        <div className="pl-3 pr-5 flex justify-between items-center">
-          <Link href="/menu" className="flex items-center text-white hover:text-purple-200">
-            <ChevronLeft />
-            <span>Back</span>
-          </Link>
-          <h1 className="text-xl font-bold">{menu?.title}</h1>
-        </div>
-      </header>
-
-      <main className="container mx-auto p-4">
+    <>
+      <MenuHeader title={menu?.title ?? 'Menu'} />
+      <section className="container mx-auto p-4">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           {menuItems.map((item) => (
             <Link
@@ -71,7 +63,7 @@ export default async function MenuSinglePage(props: { params: Promise<{ menu: st
             </Link>
           ))}
         </div>
-      </main>
-    </div>
+      </section>
+    </>
   );
 }
