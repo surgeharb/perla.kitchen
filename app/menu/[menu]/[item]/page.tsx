@@ -44,7 +44,7 @@ export default async function ItemDetailsPage(props: {
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
       priceCurrency: 'EUR',
-      price: itemDetails.price,
+      price: itemDetails.servingSizes?.[0]?.price ?? 0,
     },
   };
 
@@ -83,22 +83,28 @@ export default async function ItemDetailsPage(props: {
                 />
               </div>
             )}
-            <div className="p-6">
-              <div className="flex justify-between items-center gap-4">
-                <h2 className="text-2xl font-bold text-purple-800 flex-2">{itemDetails.title}</h2>
-                <p className="text-xl font-semibold text-purple-600 flex-1 min-w-[75px] text-right">
-                  {itemDetails.servingSizes?.[0].price} €
-                </p>
-              </div>
-              <p className="text-gray-600 mb-6">{itemDetails.description}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {itemDetails.servingSizes?.[0].size && (
-                  <div className="flex items-center gap-2">
-                    <Utensils className="text-purple-600" />
-                    <span>{itemDetails.servingSizes?.[0].size}</span>
-                  </div>
-                )}
-              </div>
+            <div className="p-6 flex flex-col gap-4">
+              <h2 className="text-2xl font-bold text-purple-800">{itemDetails.title}</h2>
+              {!!itemDetails?.servingSizes?.length && (
+                <div className="flex flex-col gap-3">
+                  {itemDetails.servingSizes.map((serving, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 rounded-lg border border-purple-100 hover:border-purple-300 transition-colors">
+                      <div className="flex items-center gap-2">
+                        <Utensils className="text-purple-600 h-5 w-5" />
+                        <span className="font-medium">{serving.size}</span>
+                      </div>
+                      <span className="text-lg font-semibold text-purple-600">
+                        {serving.price} €
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {!!itemDetails.description && (
+                <p className="text-gray-600">{itemDetails.description}</p>
+              )}
             </div>
           </div>
         </main>
