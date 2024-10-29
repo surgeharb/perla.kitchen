@@ -29,14 +29,28 @@ export const menuItemType = defineType({
       type: 'internationalizedArrayText',
     }),
     defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'number',
-    }),
-    defineField({
-      name: 'servingSize',
-      title: 'Serving Size',
-      type: 'string',
+      name: 'servingSizes',
+      title: 'Serving Sizes & Prices',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'size',
+              title: 'Serving Size',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: 'price',
+              title: 'Price',
+              type: 'number',
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'menu',

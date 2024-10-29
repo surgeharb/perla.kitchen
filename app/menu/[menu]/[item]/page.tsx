@@ -16,11 +16,9 @@ async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | n
   });
 }
 
-export default async function ItemDetailsPage(
-  props: {
-    params: Promise<{ menu: string; item: string }>;
-  }
-) {
+export default async function ItemDetailsPage(props: {
+  params: Promise<{ menu: string; item: string }>;
+}) {
   const params = await props.params;
   const itemDetails = await getMenuItemDetails(params.item);
 
@@ -89,15 +87,15 @@ export default async function ItemDetailsPage(
               <div className="flex justify-between items-center gap-4">
                 <h2 className="text-2xl font-bold text-purple-800 flex-2">{itemDetails.title}</h2>
                 <p className="text-xl font-semibold text-purple-600 flex-1 min-w-[75px] text-right">
-                  {itemDetails.price} €
+                  {itemDetails.servingSizes?.[0].price} €
                 </p>
               </div>
               <p className="text-gray-600 mb-6">{itemDetails.description}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {itemDetails.servingSize && (
+                {itemDetails.servingSizes?.[0].size && (
                   <div className="flex items-center gap-2">
                     <Utensils className="text-purple-600" />
-                    <span>{itemDetails.servingSize}</span>
+                    <span>{itemDetails.servingSizes?.[0].size}</span>
                   </div>
                 )}
               </div>

@@ -109,8 +109,11 @@ export type MenuItem = {
       _key: string;
     } & InternationalizedArrayTextValue
   >;
-  price?: number;
-  servingSize?: string;
+  servingSizes?: Array<{
+    size?: string;
+    price?: number;
+    _key: string;
+  }>;
   menu?: {
     _ref: string;
     _type: 'reference';
@@ -482,7 +485,7 @@ export type QueryMenusResult = Array<{
   } | null;
 }>;
 // Variable: QueryMenuItems
-// Query: *[_type == "menuItem" && menu->slug.current == $menu] {  _id,  title,  description,  slug,  price,  image,  menu -> {    title  }}
+// Query: *[_type == "menuItem" && menu->slug.current == $menu] {  _id,  title,  description,  slug,  image,  menu -> {    title  }}
 export type QueryMenuItemsResult = Array<{
   _id: string;
   title: string | null;
@@ -492,7 +495,6 @@ export type QueryMenuItemsResult = Array<{
     } & InternationalizedArrayTextValue
   > | null;
   slug: Slug | null;
-  price: number | null;
   image: {
     asset?: {
       _ref: string;
@@ -509,13 +511,15 @@ export type QueryMenuItemsResult = Array<{
   } | null;
 }>;
 // Variable: QueryMenuItem
-// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  "description": description[_key == $language][0].value,  servingSize,  price,  image}
+// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  "description": description[_key == $language][0].value,  servingSizes[] {    size,    price  },  image}
 export type QueryMenuItemResult = {
   _id: string;
   title: string | null;
   description: string | null;
-  servingSize: string | null;
-  price: number | null;
+  servingSizes: Array<{
+    size: string | null;
+    price: number | null;
+  }> | null;
   image: {
     asset?: {
       _ref: string;
@@ -529,7 +533,7 @@ export type QueryMenuItemResult = {
   } | null;
 } | null;
 // Variable: QueryWeeklyMeals
-// Query: *[_type == "weeklyMeal"] {  _id,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    price,    image  }}
+// Query: *[_type == "weeklyMeal"] {  _id,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    image  }}
 export type QueryWeeklyMealsResult = Array<{
   _id: string;
   title: string | null;
@@ -544,7 +548,6 @@ export type QueryWeeklyMealsResult = Array<{
         _key: string;
       } & InternationalizedArrayTextValue
     > | null;
-    price: number | null;
     image: {
       asset?: {
         _ref: string;
@@ -564,8 +567,8 @@ import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image\n}': QueryMenusResult;
-    '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  price,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
-    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSize,\n  price,\n  image\n}': QueryMenuItemResult;
-    '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    price,\n    image\n  }\n}': QueryWeeklyMealsResult;
+    '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
+    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image\n}': QueryMenuItemResult;
+    '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }
 }
