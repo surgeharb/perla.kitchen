@@ -3,6 +3,7 @@ import { sanityFetch } from '@/sanity/lib/client';
 import { QueryMenus, QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { QueryMenusResult, QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getDayName, getNextAvailableDates, unformatDate } from '@/lib/date';
+import { MenuHeader } from '@/components/menu-header';
 import { MenuCard } from '@/components/menu-card';
 
 const LANGUAGE = 'en';
@@ -36,26 +37,28 @@ export default async function MenuListPage() {
   );
 
   return (
-    <main className="container mx-auto p-4 flex flex-col gap-4">
-      <h2 className="text-3xl font-bold text-purple-800">Our Menu</h2>
-      {currentDateMeals.length > 0 && (
-        <MenuCard
-          key="weekly-specials"
-          title={`${getDayName(nextWeeklyMealDay)}'s Menu`}
-          href={`/menu/weekly-specials`}
-          variant="banner"
-        />
-      )}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {menus.map((menu) => (
+    <>
+      <MenuHeader title="Our Menu" skipBack size="large" />
+      <main className="container mx-auto p-4 flex flex-col gap-4">
+        {currentDateMeals.length > 0 && (
           <MenuCard
-            key={menu._id}
-            title={menu.title}
-            image={menu.image}
-            href={`/menu/${menu.slug?.current}`}
+            key="weekly-specials"
+            title={`${getDayName(nextWeeklyMealDay)}'s Menu`}
+            href={`/menu/weekly-specials`}
+            variant="banner"
           />
-        ))}
-      </div>
-    </main>
+        )}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {menus.map((menu) => (
+            <MenuCard
+              key={menu._id}
+              title={menu.title}
+              image={menu.image}
+              href={`/menu/${menu.slug?.current}`}
+            />
+          ))}
+        </div>
+      </main>
+    </>
   );
 }
