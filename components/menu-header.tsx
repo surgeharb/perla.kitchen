@@ -28,6 +28,7 @@ export function MenuHeader({
             variant="ghost"
             size="icon"
             onClick={router.back}
+            aria-label="Back"
             className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 -ml-2">
             <ChevronLeft className="h-5 w-5" />
           </Button>
