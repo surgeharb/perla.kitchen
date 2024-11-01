@@ -32,7 +32,7 @@ export default async function MenuSinglePage(props: { params: Promise<{ menu: st
     <>
       <MenuHeader title={menu?.title ?? 'Menu'} />
       <section className="container mx-auto p-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {menuItems.map((item) => (
             <MenuCard
               key={item._id}

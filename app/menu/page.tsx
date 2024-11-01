@@ -32,9 +32,11 @@ export default async function MenuListPage() {
     1,
   );
 
-  const currentDateMeals = (weeklyMeals || []).filter((meal) =>
-    areDatesEqual(meal.availableDate || '', nextWeeklyMealDay),
-  );
+  const currentDateMeals = nextWeeklyMealDay
+    ? (weeklyMeals || []).filter((meal) =>
+        areDatesEqual(meal.availableDate || '', nextWeeklyMealDay),
+      )
+    : [];
 
   return (
     <>
@@ -48,7 +50,7 @@ export default async function MenuListPage() {
             variant="banner"
           />
         )}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {menus.map((menu) => (
             <MenuCard
               key={menu._id}
