@@ -6,8 +6,11 @@ import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { QueryMenuItem } from '@/sanity/queries/menu';
 import { QueryMenuItemResult } from '@/sanity.types';
 import { MenuHeader } from '@/components/menu-header';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const LANGUAGE = 'en';
+const phoneNumber = '+34606466550';
 
 async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | null> {
   return sanityFetch({
@@ -47,6 +50,10 @@ export default async function ItemDetailsPage(props: {
       price: itemDetails.servingSizes?.[0]?.price ?? 0,
     },
   };
+
+  const orderNowMessage = encodeURIComponent(
+    `Hello! I would like to place an order for ${itemDetails.title}.`,
+  );
 
   return (
     <>
@@ -88,6 +95,15 @@ export default async function ItemDetailsPage(props: {
                 ))}
               </div>
             )}
+            <Link
+              href={`https://wa.me/${phoneNumber}?text=${orderNowMessage}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full">
+              <Button variant="default" size="lg" className="w-full">
+                Order Now
+              </Button>
+            </Link>
             {!!itemDetails.description && (
               <p className="text-gray-600">{itemDetails.description}</p>
             )}
