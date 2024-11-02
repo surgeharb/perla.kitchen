@@ -26,7 +26,10 @@ export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug
     size,
     price
   },
-  image
+  image,
+  menu -> {
+    title
+  }
 }`;
 
 export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {

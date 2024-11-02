@@ -511,7 +511,7 @@ export type QueryMenuItemsResult = Array<{
   } | null;
 }>;
 // Variable: QueryMenuItem
-// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  "description": description[_key == $language][0].value,  servingSizes[] {    size,    price  },  image}
+// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  "description": description[_key == $language][0].value,  servingSizes[] {    size,    price  },  image,  menu -> {    title  }}
 export type QueryMenuItemResult = {
   _id: string;
   title: string | null;
@@ -530,6 +530,9 @@ export type QueryMenuItemResult = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: 'image';
+  } | null;
+  menu: {
+    title: string | null;
   } | null;
 } | null;
 // Variable: QueryWeeklyMeals
@@ -568,7 +571,7 @@ declare module '@sanity/client' {
   interface SanityQueries {
     '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
-    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image\n}': QueryMenuItemResult;
+    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemResult;
     '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }
 }

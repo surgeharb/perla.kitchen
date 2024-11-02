@@ -63,7 +63,7 @@ export default async function ItemDetailsPage(props: {
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <MenuHeader title={itemDetails.title ?? 'Menu Item'} />
+      <MenuHeader title={itemDetails.menu?.title ?? 'Menu'} />
       <section className="container mx-auto p-4">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {!!itemDetails.image && (
