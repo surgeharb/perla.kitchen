@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { Utensils } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
-import { QueryMenuItem } from '@/sanity/queries/menu';
-import { QueryMenuItemResult } from '@/sanity.types';
+import { QueryMenuItem, QueryMenuItems } from '@/sanity/queries/menu';
+import { QueryMenuItemResult, QueryMenuItemsResult } from '@/sanity.types';
 import { MenuHeader } from '@/components/menu-header';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
@@ -17,6 +17,19 @@ async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | n
     query: QueryMenuItem,
     params: { slug, language: LANGUAGE },
   });
+}
+
+async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
+  return sanityFetch({
+    query: QueryMenuItems,
+    params: { menu },
+  });
+}
+
+export async function generateStaticParams(props: { params: Promise<{ menu: string }> }) {
+  const params = await props.params;
+  const menuItems = await getMenuItems(params.menu);
+  return menuItems.map((item) => ({ menu: params.menu, item: item.slug?.current }));
 }
 
 export default async function ItemDetailsPage(props: {

@@ -33,6 +33,7 @@ type MenuListPageProps = {
 export default async function MenuListPage({ params }: MenuListPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'MainHeader' });
+
   const [menus, weeklyMeals] = await Promise.all([getMenus(), getWeeklyMeals()]);
 
   const [nextWeeklyMealDay] = getNextAvailableDates(
