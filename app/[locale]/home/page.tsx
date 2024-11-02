@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { CategoryCarousel } from '@/components/category-carousel';
 import { CategoryArtwork } from '@/components/category-artwork';
 import { Button } from '@/components/ui/button';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/layout/Footer';
 import { Link } from '@/i18n/routing';
 
 export default function HomePage() {
