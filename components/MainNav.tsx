@@ -1,5 +1,4 @@
-import Link from 'next/link';
-
+import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { SearchMenu } from './search-menu';
 
@@ -9,20 +8,17 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)} {...props}>
         <Link
           href="/"
-          className="text-sm font-medium text-primary transition-colors hover:text-primary"
-        >
+          className="text-sm font-medium text-primary transition-colors hover:text-primary">
           Home
         </Link>
         <Link
           href="/blog"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
           Blog
         </Link>
         <Link
           href="/menu"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
           Menu
         </Link>
       </nav>

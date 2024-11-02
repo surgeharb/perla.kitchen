@@ -1,9 +1,9 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { buildSanityImageUrl } from '@/sanity/lib/client';
+import { Link } from '@/i18n/routing';
 
 const getMenuImage = (image: SanityImageSource) =>
   buildSanityImageUrl(image, { height: 300, width: 300 });

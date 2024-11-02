@@ -7,7 +7,7 @@ import { QueryMenuItem } from '@/sanity/queries/menu';
 import { QueryMenuItemResult } from '@/sanity.types';
 import { MenuHeader } from '@/components/menu-header';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 
 const LANGUAGE = 'en';
 const phoneNumber = '+34606466550';

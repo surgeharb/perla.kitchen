@@ -1,10 +1,12 @@
 import React from 'react';
+import { getTranslations } from 'next-intl/server';
 import { sanityFetch } from '@/sanity/lib/client';
 import { QueryMenus, QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { QueryMenusResult, QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getDayName, getNextAvailableDates, unformatDate } from '@/lib/date';
 import { MenuHeader } from '@/components/menu-header';
 import { MenuCard } from '@/components/menu-card';
+import { Locale } from '@/i18n/routing';
 
 const LANGUAGE = 'en';
 
@@ -24,7 +26,13 @@ async function getMenus(): Promise<QueryMenusResult> {
   });
 }
 
-export default async function MenuListPage() {
+type MenuListPageProps = {
+  params: Promise<{ locale: Locale }>;
+};
+
+export default async function MenuListPage({ params }: MenuListPageProps) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'MainHeader' });
   const [menus, weeklyMeals] = await Promise.all([getMenus(), getWeeklyMeals()]);
 
   const [nextWeeklyMealDay] = getNextAvailableDates(
@@ -40,7 +48,7 @@ export default async function MenuListPage() {
 
   return (
     <>
-      <MenuHeader title="Our Menu" skipBack size="large" />
+      <MenuHeader title={t('OurMenu')} skipBack size="large" />
       <main className="container mx-auto p-4 flex flex-col gap-4">
         {currentDateMeals.length > 0 && (
           <MenuCard
