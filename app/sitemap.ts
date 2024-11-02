@@ -4,6 +4,7 @@ import { Locale, getPathname, routing } from '@/i18n/routing';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // TODO: make sure all pages are included
+  // https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
   return [getEntry('/')];
 }
 
