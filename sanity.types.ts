@@ -467,7 +467,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/queries/menu.tsx
 // Variable: QueryMenus
-// Query: *[_type == "menu"] {  _id,  title,  slug,  image}
+// Query: *[_type == "menu"] {  _id,  title,  slug,  image,  _updatedAt}
 export type QueryMenusResult = Array<{
   _id: string;
   title: string | null;
@@ -483,9 +483,10 @@ export type QueryMenusResult = Array<{
     crop?: SanityImageCrop;
     _type: 'image';
   } | null;
+  _updatedAt: string;
 }>;
 // Variable: QueryMenuItems
-// Query: *[_type == "menuItem" && menu->slug.current == $menu] {  _id,  title,  description,  slug,  image,  menu -> {    title  }}
+// Query: *[_type == "menuItem" && menu->slug.current == $menu] {  _id,  title,  description,  slug,  image,  menu -> {    title  },  _updatedAt}
 export type QueryMenuItemsResult = Array<{
   _id: string;
   title: string | null;
@@ -509,6 +510,7 @@ export type QueryMenuItemsResult = Array<{
   menu: {
     title: string | null;
   } | null;
+  _updatedAt: string;
 }>;
 // Variable: QueryMenuItem
 // Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  title,  "description": description[_key == $language][0].value,  servingSizes[] {    size,    price  },  image,  menu -> {    title  }}
@@ -569,8 +571,8 @@ export type QueryWeeklyMealsResult = Array<{
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image\n}': QueryMenusResult;
-    '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemsResult;
+    '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image,\n  _updatedAt\n}': QueryMenusResult;
+    '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  menu -> {\n    title\n  },\n  _updatedAt\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemResult;
     '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image\n  }\n}': QueryWeeklyMealsResult;
   }

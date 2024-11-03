@@ -12,5 +12,8 @@
   },
   "Manifest": {
     "name": "مطبخ بيرلا"
+  },
+  "WeeklySpecials": {
+    "orderInAdvance": "يرجى الطلب قبل يوم واحد على الأقل"
   }
 }

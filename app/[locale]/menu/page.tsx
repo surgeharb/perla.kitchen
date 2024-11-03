@@ -8,13 +8,11 @@ import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { MenuCard } from '@/components/menu-card';
 import { Locale } from '@/i18n/routing';
 
-const LANGUAGE = 'en';
-
-const getWeeklyMeals = async (): Promise<QueryWeeklyMealsResult | null> => {
+const getWeeklyMeals = async (language: Locale): Promise<QueryWeeklyMealsResult | null> => {
   const weeklyMeals = await sanityFetch({
     query: QueryWeeklyMeals,
     params: {
-      language: LANGUAGE,
+      language,
     },
   });
   return weeklyMeals;
@@ -34,7 +32,7 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'MainHeader' });
 
-  const [menus, weeklyMeals] = await Promise.all([getMenus(), getWeeklyMeals()]);
+  const [menus, weeklyMeals] = await Promise.all([getMenus(), getWeeklyMeals(locale)]);
 
   const [nextWeeklyMealDay] = getNextAvailableDates(
     (weeklyMeals || []).map((meal) => unformatDate(meal.availableDate ?? '')),

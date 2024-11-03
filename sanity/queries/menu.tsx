@@ -4,7 +4,8 @@ export const QueryMenus = groq`*[_type == "menu"] {
   _id,
   title,
   slug,
-  image
+  image,
+  _updatedAt
 }`;
 
 export const QueryMenuItems = groq`*[_type == "menuItem" && menu->slug.current == $menu] {
@@ -15,7 +16,8 @@ export const QueryMenuItems = groq`*[_type == "menuItem" && menu->slug.current =
   image,
   menu -> {
     title
-  }
+  },
+  _updatedAt
 }`;
 
 export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug][0] {

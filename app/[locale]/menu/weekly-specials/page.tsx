@@ -1,17 +1,17 @@
 import React from 'react';
+import { getTranslations } from 'next-intl/server';
 import { QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getNextAvailableDates } from '@/lib/date';
 import { sanityFetch } from '@/sanity/lib/client';
+import { Locale } from '@/i18n/routing';
 import { WeeklyMealCard } from './weekly-meal-card';
 
-const LANGUAGE = 'en';
-
-const getWeeklyMeals = async (): Promise<QueryWeeklyMealsResult | null> => {
+const getWeeklyMeals = async (language: Locale): Promise<QueryWeeklyMealsResult | null> => {
   const weeklyMeals = await sanityFetch({
     query: QueryWeeklyMeals,
     params: {
-      language: LANGUAGE,
+      language,
     },
   });
   return weeklyMeals;
@@ -21,8 +21,14 @@ const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 };
 
-export default async function WeeklySpecialsPage() {
-  const weeklyMeals = await getWeeklyMeals();
+type WeeklySpecialsPageProps = {
+  params: Promise<{ locale: Locale }>;
+};
+
+export default async function WeeklySpecialsPage({ params }: WeeklySpecialsPageProps) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'WeeklySpecials' });
+  const weeklyMeals = await getWeeklyMeals(locale);
 
   if (!weeklyMeals) {
     return <div>No weekly meals found</div>;
@@ -45,7 +51,7 @@ export default async function WeeklySpecialsPage() {
             ))}
         </div>
       ))}
-      <p className="text-center text-gray-600">Please order at least one day in advance</p>
+      <p className="text-center text-gray-600">{t('orderInAdvance')}</p>
     </section>
   );
 }

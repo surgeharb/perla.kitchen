@@ -12,5 +12,8 @@
   },
   "Manifest": {
     "name": "Perla's Kitchen"
+  },
+  "WeeklySpecials": {
+    "orderInAdvance": "Please order at least one day in advance"
   }
 }
