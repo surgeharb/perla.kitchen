@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { cn } from '@/lib/utils';
 import { WhatsAppFAB } from '../whatsapp-fab';
-import { MainNav } from '../MainNav';
+import { MainNav } from './NavigationHeader';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,7 +21,7 @@ export async function BaseLayout({ children, locale }: Props) {
   const messages = await getMessages();
 
   return (
-    <html className="h-full" lang={locale}>
+    <html className="h-full" lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body className={cn(inter.className, 'flex h-full flex-col')}>
         <NextIntlClientProvider messages={messages}>
           {SHOW_MAIN_NAV && <MainNav />}

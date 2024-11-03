@@ -2,10 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
-import { Button } from './ui/button';
+
 import { cn } from '@/lib/utils';
 
-export function MenuHeader({
+import { Button } from '../ui/button';
+import { LocaleSwitcher } from '../LocaleSwitcher';
+
+export function NavigationMenuHeader({
   title,
   skipBack,
   size = 'default',
@@ -19,7 +22,7 @@ export function MenuHeader({
   return (
     <header
       className={cn(
-        'sticky top-0 z-10 backdrop-blur-sm bg-white/80 border-b border-purple-100 px-4 py-2 flex items-center',
+        'sticky top-0 z-10 backdrop-blur-sm bg-white/80 border-b border-purple-100 px-4 py-2 flex items-center justify-between',
         size === 'large' && 'h-14',
       )}>
       <div className="flex gap-2 items-center">
@@ -41,6 +44,7 @@ export function MenuHeader({
           {title}
         </h1>
       </div>
+      <LocaleSwitcher />
     </header>
   );
 }

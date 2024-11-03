@@ -5,7 +5,7 @@ import { Utensils } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import { QueryMenuItem, QueryMenuItems } from '@/sanity/queries/menu';
 import { QueryMenuItemResult, QueryMenuItemsResult } from '@/sanity.types';
-import { MenuHeader } from '@/components/menu-header';
+import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
 
@@ -76,7 +76,7 @@ export default async function ItemDetailsPage(props: {
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <MenuHeader title={itemDetails.menu?.title ?? 'Menu'} />
+      <NavigationMenuHeader title={itemDetails.menu?.title ?? 'Menu'} />
       <section className="container mx-auto p-4">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {!!itemDetails.image && (

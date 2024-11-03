@@ -2,7 +2,7 @@ import React from 'react';
 import { sanityFetch } from '@/sanity/lib/client';
 import { QueryMenuItems } from '@/sanity/queries/menu';
 import { QueryMenuItemsResult } from '@/sanity.types';
-import { MenuHeader } from '@/components/menu-header';
+import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { MenuCard } from '@/components/menu-card';
 
 async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
@@ -30,7 +30,7 @@ export default async function MenuSinglePage(props: { params: Promise<{ menu: st
 
   return (
     <>
-      <MenuHeader title={menu?.title ?? 'Menu'} />
+      <NavigationMenuHeader title={menu?.title ?? 'Menu'} />
       <section className="container mx-auto p-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {menuItems.map((item) => (

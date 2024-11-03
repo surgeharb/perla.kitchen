@@ -6,6 +6,10 @@
     "title": "Perla's Kitchen - Authentic Lebanese Flavours",
     "description": "Perla is a professional chef and owner of Perla's Kitchen. She sells authentic Lebanese desserts and meals, bringing the taste of home to your table."
   },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "locale": "{locale, select, en {🇺🇸 English} ar {🇸🇦 Arabic} other {Unknown}}"
+  },
   "Manifest": {
     "name": "Perla's Kitchen"
   }

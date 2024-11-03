@@ -1,9 +1,9 @@
-import { MenuHeader } from '@/components/menu-header';
+import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 
 export default function MenuLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="min-h-screen bg-purple-10">
-      <MenuHeader title="Weekly Specials" />
+      <NavigationMenuHeader title="Weekly Specials" />
       {children}
     </main>
   );

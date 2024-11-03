@@ -1,6 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
-import { SearchMenu } from './search-menu';
+import { SearchMenu } from '../search-menu';
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (

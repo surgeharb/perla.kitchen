@@ -4,7 +4,7 @@ import { sanityFetch } from '@/sanity/lib/client';
 import { QueryMenus, QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { QueryMenusResult, QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getDayName, getNextAvailableDates, unformatDate } from '@/lib/date';
-import { MenuHeader } from '@/components/menu-header';
+import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { MenuCard } from '@/components/menu-card';
 import { Locale } from '@/i18n/routing';
 
@@ -49,7 +49,7 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
 
   return (
     <>
-      <MenuHeader title={t('OurMenu')} skipBack size="large" />
+      <NavigationMenuHeader title={t('OurMenu')} skipBack size="large" />
       <main className="container mx-auto p-4 flex flex-col gap-4">
         {currentDateMeals.length > 0 && (
           <MenuCard
