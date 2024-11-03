@@ -33,9 +33,10 @@ export default async function MenuSinglePage(props: { params: Promise<{ menu: st
       <NavigationMenuHeader title={menu?.title ?? 'Menu'} />
       <section className="container mx-auto p-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <MenuCard
               key={item._id}
+              index={index}
               title={item.title}
               image={item.image}
               href={`/menu/${params.menu}/${item.slug?.current}`}

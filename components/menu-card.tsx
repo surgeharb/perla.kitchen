@@ -11,11 +11,12 @@ const getMenuImage = (image: SanityImageSource) =>
 interface MenuCardProps {
   title: string | null;
   image?: SanityImageSource | null;
-  href: string;
   variant?: 'default' | 'banner';
+  index?: number;
+  href: string;
 }
 
-export function MenuCard({ title, image, href, variant = 'default' }: MenuCardProps) {
+export function MenuCard({ title, image, index, href, variant = 'default' }: MenuCardProps) {
   if (variant === 'banner') {
     return (
       <Link
@@ -29,6 +30,7 @@ export function MenuCard({ title, image, href, variant = 'default' }: MenuCardPr
               layout="fill"
               objectFit="cover"
               objectPosition="center 35%"
+              priority
             />
           </div>
         </div>
@@ -54,6 +56,7 @@ export function MenuCard({ title, image, href, variant = 'default' }: MenuCardPr
             blurDataURL={getMenuImage(image).blur(1).url()}
             className="object-cover"
             placeholder="blur"
+            priority={!!index && index < 3}
             fill
           />
         </div>
