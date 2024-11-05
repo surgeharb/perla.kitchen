@@ -12,11 +12,10 @@ interface MenuCardProps {
   title: string | null;
   image?: SanityImageSource | null;
   variant?: 'default' | 'banner';
-  index?: number;
   href: string;
 }
 
-export function MenuCard({ title, image, index, href, variant = 'default' }: MenuCardProps) {
+export function MenuCard({ title, image, href, variant = 'default' }: MenuCardProps) {
   if (variant === 'banner') {
     return (
       <Link
@@ -56,7 +55,6 @@ export function MenuCard({ title, image, index, href, variant = 'default' }: Men
             blurDataURL={getMenuImage(image).blur(1).url()}
             className="object-cover"
             placeholder="blur"
-            priority={!!index && index < 3}
             fill
           />
         </div>

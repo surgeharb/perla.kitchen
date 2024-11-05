@@ -16,9 +16,7 @@ type Props = {
 const SHOW_MAIN_NAV = false;
 
 export async function BaseLayout({ children, locale }: Props) {
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
+  const messages = await getMessages({ locale });
 
   return (
     <html className="h-full" lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>

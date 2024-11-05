@@ -58,10 +58,9 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
           />
         )}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {menus.map((menu, index) => (
+          {menus.map((menu) => (
             <MenuCard
               key={menu._id}
-              index={index}
               title={menu.title}
               image={menu.image}
               href={`/menu/${menu.slug?.current}`}

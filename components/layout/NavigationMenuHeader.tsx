@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 
@@ -17,7 +18,19 @@ export function NavigationMenuHeader({
   skipBack?: boolean;
   size?: 'default' | 'large';
 }) {
+  const locale = useLocale();
   const router = useRouter();
+
+  const handleBack = () => {
+    if (typeof window === 'undefined') return;
+
+    if (window.history.length === 1) {
+      router.replace(`/${locale}/menu`);
+      return;
+    }
+
+    router.back();
+  };
 
   return (
     <header
@@ -30,7 +43,7 @@ export function NavigationMenuHeader({
           <Button
             variant="ghost"
             size="icon"
-            onClick={router.back}
+            onClick={handleBack}
             aria-label="Back"
             className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 -ml-2">
             <ChevronLeft className="h-5 w-5" />

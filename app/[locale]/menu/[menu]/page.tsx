@@ -36,7 +36,6 @@ export default async function MenuSinglePage(props: { params: Promise<{ menu: st
           {menuItems.map((item, index) => (
             <MenuCard
               key={item._id}
-              index={index}
               title={item.title}
               image={item.image}
               href={`/menu/${params.menu}/${item.slug?.current}`}
