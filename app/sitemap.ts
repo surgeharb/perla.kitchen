@@ -8,13 +8,16 @@ import { host } from '@/config';
 async function getMenus(): Promise<QueryMenusResult> {
   return sanityFetch({
     query: QueryMenus,
+    params: {
+      language: 'en',
+    },
   });
 }
 
 async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
   return sanityFetch({
     query: QueryMenuItems,
-    params: { menu },
+    params: { menu, language: 'en' },
   });
 }
 

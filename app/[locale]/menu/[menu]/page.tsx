@@ -4,17 +4,20 @@ import { QueryMenuItems } from '@/sanity/queries/menu';
 import { QueryMenuItemsResult } from '@/sanity.types';
 import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { MenuCard } from '@/components/menu-card';
+import { Locale } from '@/i18n/routing';
 
-async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
+async function getMenuItems(menu: string, language: Locale): Promise<QueryMenuItemsResult> {
   return sanityFetch({
     query: QueryMenuItems,
-    params: { menu },
+    params: { menu, language },
   });
 }
 
-export default async function MenuSinglePage(props: { params: Promise<{ menu: string }> }) {
+export default async function MenuSinglePage(props: {
+  params: Promise<{ menu: string; locale: Locale }>;
+}) {
   const params = await props.params;
-  const menuItems = await getMenuItems(params.menu);
+  const menuItems = await getMenuItems(params.menu, params.locale);
 
   if (!menuItems || menuItems.length === 0) {
     return (

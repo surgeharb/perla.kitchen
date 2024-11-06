@@ -21,10 +21,10 @@ async function getMenuItemDetails(
   });
 }
 
-async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
+async function getMenuItems(menu: string, language: Locale): Promise<QueryMenuItemsResult> {
   return sanityFetch({
     query: QueryMenuItems,
-    params: { menu },
+    params: { menu, language },
   });
 }
 
@@ -42,7 +42,7 @@ export async function generateStaticParams(props: {
   params: Promise<{ menu: string; locale: Locale }>;
 }) {
   const { menu, locale } = await props.params;
-  const menuItems = await getMenuItems(menu);
+  const menuItems = await getMenuItems(menu, locale);
   const weeklyMeals = await getWeeklyMeals(locale);
 
   return [

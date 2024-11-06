@@ -14,8 +14,7 @@ export const weeklyMealType = defineType({
     },
     prepare({ title, menuItemImage }) {
       return {
-        // title: title.find((t: any) => t._key === 'en')?.value,
-        title: title,
+        title: title.find((t: any) => t._key === 'en')?.value,
         media: menuItemImage,
       };
     },

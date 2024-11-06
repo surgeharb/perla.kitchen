@@ -18,9 +18,12 @@ const getWeeklyMeals = async (language: Locale): Promise<QueryWeeklyMealsResult 
   return weeklyMeals;
 };
 
-async function getMenus(): Promise<QueryMenusResult> {
+async function getMenus(language: Locale): Promise<QueryMenusResult> {
   return sanityFetch({
     query: QueryMenus,
+    params: {
+      language,
+    },
   });
 }
 
@@ -32,7 +35,7 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'MainHeader' });
 
-  const [menus, weeklyMeals] = await Promise.all([getMenus(), getWeeklyMeals(locale)]);
+  const [menus, weeklyMeals] = await Promise.all([getMenus(locale), getWeeklyMeals(locale)]);
 
   const [nextWeeklyMealDay] = getNextAvailableDates(
     (weeklyMeals || []).map((meal) => unformatDate(meal.availableDate ?? '')),

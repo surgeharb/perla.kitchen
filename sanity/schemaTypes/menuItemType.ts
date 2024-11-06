@@ -7,11 +7,23 @@ export const menuItemType = defineType({
   type: 'document',
   // @ts-ignore
   icon: LemonIcon,
+  preview: {
+    select: {
+      title: 'title',
+      image: 'image.asset',
+    },
+    prepare({ title, image }) {
+      return {
+        title: title.find((t: any) => t._key === 'en')?.value,
+        media: image,
+      };
+    },
+  },
   fields: [
     defineField({
       name: 'title',
       title: 'Item Name',
-      type: 'string',
+      type: 'internationalizedArrayString',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

@@ -2,7 +2,7 @@ import { groq } from 'next-sanity';
 
 export const QueryMenus = groq`*[_type == "menu"] {
   _id,
-  title,
+  "title": title[_key == $language][0].value,
   slug,
   image,
   _updatedAt
@@ -10,19 +10,19 @@ export const QueryMenus = groq`*[_type == "menu"] {
 
 export const QueryMenuItems = groq`*[_type == "menuItem" && menu->slug.current == $menu] {
   _id,
-  title,
-  description,
+  "title": title[_key == $language][0].value,
+  "description": description[_key == $language][0].value,
   slug,
   image,
   menu -> {
-    title
+    "title": title[_key == $language][0].value
   },
   _updatedAt
 }`;
 
 export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug][0] {
   _id,
-  title,
+  "title": title[_key == $language][0].value,
   "description": description[_key == $language][0].value,
   servingSizes[] {
     size,
@@ -30,7 +30,7 @@ export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug
   },
   image,
   menu -> {
-    title
+    "title": title[_key == $language][0].value
   }
 }`;
 
@@ -42,8 +42,8 @@ export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {
   availableDate,
   menuItems[] -> {
     _id,
-    title,
-    description,
+    "title": title[_key == $language][0].value,
+    "description": description[_key == $language][0].value,
     image,
     slug
   }

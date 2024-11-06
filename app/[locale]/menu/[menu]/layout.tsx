@@ -5,6 +5,9 @@ import { QueryMenus } from '@/sanity/queries/menu';
 async function getMenus(): Promise<QueryMenusResult> {
   return sanityFetch({
     query: QueryMenus,
+    params: {
+      language: 'en',
+    },
   });
 }
 
