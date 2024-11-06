@@ -9,21 +9,23 @@ export const weeklyMealType = defineType({
   icon: TrolleyIcon,
   preview: {
     select: {
-      title: 'title',
+      title: 'menuItems.0.title',
       menuItemImage: 'menuItems.0.image.asset',
     },
     prepare({ title, menuItemImage }) {
       return {
-        title: title.find((t: any) => t._key === 'en')?.value,
+        // title: title.find((t: any) => t._key === 'en')?.value,
+        title: title,
         media: menuItemImage,
       };
     },
   },
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'internationalizedArrayString',
+      name: 'menuItems',
+      title: 'Items',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'menuItem' }] }],
     }),
     defineField({
       name: 'description',
@@ -52,12 +54,6 @@ export const weeklyMealType = defineType({
       type: 'number',
       description: 'Price in euros',
       initialValue: 10,
-    }),
-    defineField({
-      name: 'menuItems',
-      title: 'Items',
-      type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'menuItem' }] }],
     }),
   ],
 });

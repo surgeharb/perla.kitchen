@@ -74,11 +74,13 @@ export type WeeklyMeal = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title?: Array<
-    {
-      _key: string;
-    } & InternationalizedArrayStringValue
-  >;
+  menuItems?: Array<{
+    _ref: string;
+    _type: 'reference';
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: 'menuItem';
+  }>;
   description?: Array<
     {
       _key: string;
@@ -87,13 +89,6 @@ export type WeeklyMeal = {
   slug?: Slug;
   availableDate?: string;
   price?: number;
-  menuItems?: Array<{
-    _ref: string;
-    _type: 'reference';
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: 'menuItem';
-  }>;
 };
 
 export type MenuItem = {
@@ -538,11 +533,10 @@ export type QueryMenuItemResult = {
   } | null;
 } | null;
 // Variable: QueryWeeklyMeals
-// Query: *[_type == "weeklyMeal"] {  _id,  _updatedAt,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    image,    slug  }}
+// Query: *[_type == "weeklyMeal"] {  _id,  _updatedAt,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    image,    slug  }}
 export type QueryWeeklyMealsResult = Array<{
   _id: string;
   _updatedAt: string;
-  title: string | null;
   description: string | null;
   price: number | null;
   availableDate: string | null;
@@ -576,6 +570,6 @@ declare module '@sanity/client' {
     '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image,\n  _updatedAt\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  menu -> {\n    title\n  },\n  _updatedAt\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemResult;
-    '*[_type == "weeklyMeal"] {\n  _id,\n  _updatedAt,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image,\n    slug\n  }\n}': QueryWeeklyMealsResult;
+    '*[_type == "weeklyMeal"] {\n  _id,\n  _updatedAt,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image,\n    slug\n  }\n}': QueryWeeklyMealsResult;
   }
 }

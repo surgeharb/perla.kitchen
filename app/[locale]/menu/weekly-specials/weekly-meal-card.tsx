@@ -23,14 +23,14 @@ export function WeeklyMealCard({ isReversed = false, meal }: WeeklyMealCardProps
         <CardContent
           className={cn('p-4 flex items-center gap-3', isReversed ? 'flex-row-reverse' : 'flex')}>
           <div className="flex-grow flex flex-col gap-1">
-            <h3 className="text-xl font-semibold">{meal.title}</h3>
+            <h3 className="text-xl font-semibold">{firstMenuItem.title}</h3>
             <p className="text-gray-600 text-sm">{meal.description}</p>
             <p className="text-purple-600 font-bold text-lg">€ {meal.price}</p>
           </div>
           {firstMenuItem.image && (
             <Image
               src={buildSanityImageUrl(firstMenuItem.image).url()}
-              alt={meal.title ?? 'Meal'}
+              alt={firstMenuItem.title ?? 'Meal'}
               width={100}
               height={100}
               className="w-24 h-24 object-cover rounded-lg"
