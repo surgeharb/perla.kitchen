@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { Locale, getPathname, routing } from '@/i18n/routing';
-import { QueryMenuItemsResult, QueryMenusResult } from '@/sanity.types';
-import { QueryMenuItems, QueryMenus } from '@/sanity/queries/menu';
+import { QueryMenuItemsResult, QueryMenusResult, QueryWeeklyMealsResult } from '@/sanity.types';
+import { QueryMenuItems, QueryMenus, QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { sanityFetch } from '@/sanity/lib/client';
 import { host } from '@/config';
 
@@ -18,8 +18,19 @@ async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
   });
 }
 
+async function getWeeklyMeals(): Promise<QueryWeeklyMealsResult> {
+  const weeklyMeals = await sanityFetch({
+    query: QueryWeeklyMeals,
+    params: {
+      language: 'en',
+    },
+  });
+  return weeklyMeals;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const menus = await getMenus();
+  const weeklyMeals = await getWeeklyMeals();
   const menuEntries = menus.map((menu) => getEntry(`/menu/${menu.slug?.current}`, menu._updatedAt));
 
   const menuItemEntries = await Promise.all(
@@ -31,11 +42,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
+  const weeklyMealEntries = weeklyMeals.map((meal) =>
+    getEntry(`/menu/weekly-specials/${meal.menuItems?.[0]?.slug?.current}`, meal._updatedAt),
+  );
+
   return [
     getEntry('/menu'),
     getEntry('/menu/weekly-specials'),
     ...menuEntries,
     ...menuItemEntries.flat(),
+    ...weeklyMealEntries,
   ];
 }
 

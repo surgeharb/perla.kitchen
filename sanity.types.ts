@@ -538,9 +538,10 @@ export type QueryMenuItemResult = {
   } | null;
 } | null;
 // Variable: QueryWeeklyMeals
-// Query: *[_type == "weeklyMeal"] {  _id,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    image  }}
+// Query: *[_type == "weeklyMeal"] {  _id,  _updatedAt,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    title,    description,    image,    slug  }}
 export type QueryWeeklyMealsResult = Array<{
   _id: string;
+  _updatedAt: string;
   title: string | null;
   description: string | null;
   price: number | null;
@@ -564,6 +565,7 @@ export type QueryWeeklyMealsResult = Array<{
       crop?: SanityImageCrop;
       _type: 'image';
     } | null;
+    slug: Slug | null;
   }> | null;
 }>;
 
@@ -574,6 +576,6 @@ declare module '@sanity/client' {
     '*[_type == "menu"] {\n  _id,\n  title,\n  slug,\n  image,\n  _updatedAt\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  title,\n  description,\n  slug,\n  image,\n  menu -> {\n    title\n  },\n  _updatedAt\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  title,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image,\n  menu -> {\n    title\n  }\n}': QueryMenuItemResult;
-    '*[_type == "weeklyMeal"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image\n  }\n}': QueryWeeklyMealsResult;
+    '*[_type == "weeklyMeal"] {\n  _id,\n  _updatedAt,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    title,\n    description,\n    image,\n    slug\n  }\n}': QueryWeeklyMealsResult;
   }
 }

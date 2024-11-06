@@ -3,19 +3,21 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { Utensils } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
-import { QueryMenuItem, QueryMenuItems } from '@/sanity/queries/menu';
-import { QueryMenuItemResult, QueryMenuItemsResult } from '@/sanity.types';
+import { QueryMenuItem, QueryMenuItems, QueryWeeklyMeals } from '@/sanity/queries/menu';
+import { QueryMenuItemResult, QueryMenuItemsResult, QueryWeeklyMealsResult } from '@/sanity.types';
 import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { Button } from '@/components/ui/button';
-import { Link } from '@/i18n/routing';
+import { Link, Locale } from '@/i18n/routing';
 
-const LANGUAGE = 'en';
 const phoneNumber = '+34606466550';
 
-async function getMenuItemDetails(slug: string): Promise<QueryMenuItemResult | null> {
+async function getMenuItemDetails(
+  slug: string,
+  language: Locale,
+): Promise<QueryMenuItemResult | null> {
   return sanityFetch({
     query: QueryMenuItem,
-    params: { slug, language: LANGUAGE },
+    params: { slug, language },
   });
 }
 
@@ -26,17 +28,37 @@ async function getMenuItems(menu: string): Promise<QueryMenuItemsResult> {
   });
 }
 
-export async function generateStaticParams(props: { params: Promise<{ menu: string }> }) {
-  const params = await props.params;
-  const menuItems = await getMenuItems(params.menu);
-  return menuItems.map((item) => ({ menu: params.menu, item: item.slug?.current }));
+async function getWeeklyMeals(language: Locale): Promise<QueryWeeklyMealsResult> {
+  const weeklyMeals = await sanityFetch({
+    query: QueryWeeklyMeals,
+    params: {
+      language,
+    },
+  });
+  return weeklyMeals;
+}
+
+export async function generateStaticParams(props: {
+  params: Promise<{ menu: string; locale: Locale }>;
+}) {
+  const { menu, locale } = await props.params;
+  const menuItems = await getMenuItems(menu);
+  const weeklyMeals = await getWeeklyMeals(locale);
+
+  return [
+    ...menuItems.map((item) => ({ menu, item: item.slug?.current })),
+    ...weeklyMeals.map((meal) => ({
+      menu: 'weekly-specials',
+      item: meal.menuItems?.[0]?.slug?.current,
+    })),
+  ];
 }
 
 export default async function ItemDetailsPage(props: {
-  params: Promise<{ menu: string; item: string }>;
+  params: Promise<{ menu: string; item: string; locale: Locale }>;
 }) {
-  const params = await props.params;
-  const itemDetails = await getMenuItemDetails(params.item);
+  const { item, locale } = await props.params;
+  const itemDetails = await getMenuItemDetails(item, locale);
 
   if (!itemDetails || !itemDetails.image) {
     redirect('/404');

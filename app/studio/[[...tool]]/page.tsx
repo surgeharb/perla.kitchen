@@ -9,7 +9,7 @@
 
 import { NextStudio } from 'next-sanity/studio';
 import { notFound } from 'next/navigation';
-import config from '../../../sanity.config';
+import config from '@/sanity.config';
 
 export const dynamic = 'force-static';
 
@@ -20,5 +20,11 @@ export default function StudioPage() {
     notFound();
   }
 
-  return <NextStudio config={config} />;
+  return (
+    <html>
+      <body>
+        <NextStudio config={config} />
+      </body>
+    </html>
+  );
 }

@@ -7,6 +7,18 @@ export const weeklyMealType = defineType({
   type: 'document',
   // @ts-ignore
   icon: TrolleyIcon,
+  preview: {
+    select: {
+      title: 'title',
+      menuItemImage: 'menuItems.0.image.asset',
+    },
+    prepare({ title, menuItemImage }) {
+      return {
+        title: title.find((t: any) => t._key === 'en')?.value,
+        media: menuItemImage,
+      };
+    },
+  },
   fields: [
     defineField({
       name: 'title',

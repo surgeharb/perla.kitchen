@@ -10,7 +10,7 @@ async function getMenus(): Promise<QueryMenusResult> {
 
 export async function generateStaticParams() {
   const menus = await getMenus();
-  return menus.map((menu) => ({ menu: menu.slug?.current }));
+  return [...menus.map((menu) => ({ menu: menu.slug?.current })), { menu: 'weekly-specials' }];
 }
 
 export default function MenuLayout({ children }: { children: React.ReactNode }) {

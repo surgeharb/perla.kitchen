@@ -36,6 +36,7 @@ export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug
 
 export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {
   _id,
+  _updatedAt,
   "title": title[_key == $language][0].value,
   "description": description[_key == $language][0].value,
   price,
@@ -44,6 +45,7 @@ export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {
     _id,
     title,
     description,
-    image
+    image,
+    slug
   }
 }`;

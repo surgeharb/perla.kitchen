@@ -7,7 +7,7 @@ import { sanityFetch } from '@/sanity/lib/client';
 import { Locale } from '@/i18n/routing';
 import { WeeklyMealCard } from './weekly-meal-card';
 
-const getWeeklyMeals = async (language: Locale): Promise<QueryWeeklyMealsResult | null> => {
+async function getWeeklyMeals(language: Locale): Promise<QueryWeeklyMealsResult | null> {
   const weeklyMeals = await sanityFetch({
     query: QueryWeeklyMeals,
     params: {
@@ -15,7 +15,7 @@ const getWeeklyMeals = async (language: Locale): Promise<QueryWeeklyMealsResult 
     },
   });
   return weeklyMeals;
-};
+}
 
 const formatDate = (date: Date): string => {
   return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
