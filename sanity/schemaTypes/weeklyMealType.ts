@@ -1,5 +1,6 @@
 import { TrolleyIcon } from '@sanity/icons';
 import { defineField, defineType } from 'sanity';
+import { client } from '../lib/client';
 
 export const weeklyMealType = defineType({
   name: 'weeklyMeal',
@@ -9,12 +10,12 @@ export const weeklyMealType = defineType({
   icon: TrolleyIcon,
   preview: {
     select: {
-      title: 'menuItems.0.title',
+      title: 'menuItems.0.title.0.value',
       menuItemImage: 'menuItems.0.image.asset',
     },
     prepare({ title, menuItemImage }) {
       return {
-        title: title.find((t: any) => t._key === 'en')?.value,
+        title,
         media: menuItemImage,
       };
     },
@@ -36,8 +37,12 @@ export const weeklyMealType = defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: async (doc: any) => {
+          const menuItem = await client.getDocument(doc.menuItems[0]._ref);
+          return menuItem?.title[0]?.value;
+        },
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'availableDate',

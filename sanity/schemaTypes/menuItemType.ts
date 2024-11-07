@@ -31,7 +31,7 @@ export const menuItemType = defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
+        source: 'title.0.value',
       },
       validation: (Rule) => Rule.required(),
     }),

@@ -566,6 +566,32 @@ export type QueryWeeklyMealsResult = Array<{
     slug: Slug | null;
   }> | null;
 }>;
+// Variable: QueryWeeklyMealWithItem
+// Query: *[_type == "weeklyMeal" && $itemId in menuItems[]._ref] | order(_updatedAt desc)[0] {  _id,  _updatedAt,  "description": description[_key == $language][0].value,  price,  availableDate,  menuItems[] -> {    _id,    "title": title[_key == $language][0].value,    "description": description[_key == $language][0].value,    image,    slug  }}
+export type QueryWeeklyMealWithItemResult = {
+  _id: string;
+  _updatedAt: string;
+  description: string | null;
+  price: number | null;
+  availableDate: string | null;
+  menuItems: Array<{
+    _id: string;
+    title: string | null;
+    description: string | null;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: 'reference';
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset';
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: 'image';
+    } | null;
+    slug: Slug | null;
+  }> | null;
+} | null;
 
 // Query TypeMap
 import '@sanity/client';
@@ -575,5 +601,6 @@ declare module '@sanity/client' {
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  slug,\n  image,\n  menu -> {\n    "title": title[_key == $language][0].value\n  },\n  _updatedAt\n}': QueryMenuItemsResult;
     '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image,\n  menu -> {\n    "title": title[_key == $language][0].value\n  }\n}': QueryMenuItemResult;
     '*[_type == "weeklyMeal"] {\n  _id,\n  _updatedAt,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    "title": title[_key == $language][0].value,\n    "description": description[_key == $language][0].value,\n    image,\n    slug\n  }\n}': QueryWeeklyMealsResult;
+    '*[_type == "weeklyMeal" && $itemId in menuItems[]._ref] | order(_updatedAt desc)[0] {\n  _id,\n  _updatedAt,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    "title": title[_key == $language][0].value,\n    "description": description[_key == $language][0].value,\n    image,\n    slug\n  }\n}': QueryWeeklyMealWithItemResult;
   }
 }

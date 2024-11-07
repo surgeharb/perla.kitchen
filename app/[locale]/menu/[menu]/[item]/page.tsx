@@ -3,8 +3,18 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { Utensils } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
-import { QueryMenuItem, QueryMenuItems, QueryWeeklyMeals } from '@/sanity/queries/menu';
-import { QueryMenuItemResult, QueryMenuItemsResult, QueryWeeklyMealsResult } from '@/sanity.types';
+import {
+  QueryMenuItem,
+  QueryMenuItems,
+  QueryWeeklyMeals,
+  QueryWeeklyMealWithItem,
+} from '@/sanity/queries/menu';
+import {
+  QueryMenuItemResult,
+  QueryMenuItemsResult,
+  QueryWeeklyMealsResult,
+  QueryWeeklyMealWithItemResult,
+} from '@/sanity.types';
 import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { Button } from '@/components/ui/button';
 import { Link, Locale } from '@/i18n/routing';
@@ -25,6 +35,16 @@ async function getMenuItems(menu: string, language: Locale): Promise<QueryMenuIt
   return sanityFetch({
     query: QueryMenuItems,
     params: { menu, language },
+  });
+}
+
+async function getWeeklyMealWithItem(
+  itemId: string,
+  language: Locale,
+): Promise<QueryWeeklyMealWithItemResult> {
+  return sanityFetch({
+    query: QueryWeeklyMealWithItem,
+    params: { itemId, language },
   });
 }
 
@@ -57,11 +77,19 @@ export async function generateStaticParams(props: {
 export default async function ItemDetailsPage(props: {
   params: Promise<{ menu: string; item: string; locale: Locale }>;
 }) {
-  const { item, locale } = await props.params;
+  const { menu, item, locale } = await props.params;
   const itemDetails = await getMenuItemDetails(item, locale);
 
   if (!itemDetails || !itemDetails.image) {
     redirect('/404');
+  }
+
+  if (menu === 'weekly-specials') {
+    const weeklyMealWithItem = await getWeeklyMealWithItem(itemDetails._id, locale);
+    if (weeklyMealWithItem) {
+      itemDetails.description = weeklyMealWithItem.description;
+      itemDetails.servingSizes = [{ size: 'Weekly Special', price: weeklyMealWithItem.price }];
+    }
   }
 
   const image = buildSanityImageUrl(itemDetails.image, { height: 500, width: 500 });
@@ -114,12 +142,17 @@ export default async function ItemDetailsPage(props: {
             </div>
           )}
           <div className="p-6 flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-purple-800">{itemDetails.title}</h2>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-2xl font-bold text-purple-800">{itemDetails.title}</h2>
+              {!!itemDetails.description && (
+                <p className="text-gray-600">{itemDetails.description}</p>
+              )}
+            </div>
             {!!itemDetails?.servingSizes?.length && (
               <div className="flex flex-col gap-3">
-                {itemDetails.servingSizes.map((serving, index) => (
+                {itemDetails.servingSizes.map((serving) => (
                   <div
-                    key={index}
+                    key={serving.size}
                     className="flex items-center justify-between p-3 rounded-lg border border-purple-100 hover:border-purple-300 transition-colors">
                     <div className="flex items-center gap-2">
                       <Utensils className="text-purple-600 h-5 w-5" />
@@ -139,9 +172,6 @@ export default async function ItemDetailsPage(props: {
                 Order Now
               </Button>
             </Link>
-            {!!itemDetails.description && (
-              <p className="text-gray-600">{itemDetails.description}</p>
-            )}
           </div>
         </div>
       </section>

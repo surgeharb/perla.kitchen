@@ -48,3 +48,18 @@ export const QueryWeeklyMeals = groq`*[_type == "weeklyMeal"] {
     slug
   }
 }`;
+
+export const QueryWeeklyMealWithItem = groq`*[_type == "weeklyMeal" && $itemId in menuItems[]._ref] | order(_updatedAt desc)[0] {
+  _id,
+  _updatedAt,
+  "description": description[_key == $language][0].value,
+  price,
+  availableDate,
+  menuItems[] -> {
+    _id,
+    "title": title[_key == $language][0].value,
+    "description": description[_key == $language][0].value,
+    image,
+    slug
+  }
+}`;
