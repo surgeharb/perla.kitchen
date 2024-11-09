@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Inter } from 'next/font/google';
+import { Cairo, Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { getMessages } from 'next-intl/server';
 import { NextIntlClientProvider } from 'next-intl';
@@ -12,7 +12,15 @@ import { host } from '@/config';
 
 import { PHProvider, PostHogPageViewDynamic } from './providers';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+const cairo = Cairo({
+  subsets: ['arabic'],
+  display: 'swap',
+});
 
 type Props = {
   children: ReactNode;
@@ -58,7 +66,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html className="h-full" lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <PHProvider>
-        <body className={cn(inter.className, 'flex h-full flex-col')}>
+        <body
+          className={cn(
+            'flex h-full flex-col',
+            locale === 'ar' ? cairo.className : inter.className,
+          )}>
           <NextIntlClientProvider messages={messages}>
             {SHOW_MAIN_NAV && <MainNav />}
             {children}
