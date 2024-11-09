@@ -1,6 +1,6 @@
 {
   "MainHeader": {
-    "OurMenu": "Our Menu"
+    "ourMenu": "Our Menu"
   },
   "LocaleLayout": {
     "title": "Perla's Kitchen - Authentic Lebanese Flavours",
@@ -14,6 +14,8 @@
     "name": "Perla's Kitchen"
   },
   "WeeklySpecials": {
-    "orderInAdvance": "Please order at least one day in advance"
+    "title": "Weekly Specials",
+    "orderInAdvance": "Please order at least one day in advance",
+    "noWeeklyMealsFound": "No weekly meals found"
   }
 }

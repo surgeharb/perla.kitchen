@@ -1,8 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { buildSanityImageUrl } from '@/sanity/lib/client';
+import { useIsRTL } from '@/hooks/useIsRTL';
 import { Link } from '@/i18n/routing';
 
 const getMenuImage = (image: SanityImageSource) =>
@@ -16,6 +17,8 @@ interface MenuCardProps {
 }
 
 export function MenuCard({ title, image, href, variant = 'default' }: MenuCardProps) {
+  const isRTL = useIsRTL();
+
   if (variant === 'banner') {
     return (
       <Link
@@ -36,7 +39,11 @@ export function MenuCard({ title, image, href, variant = 'default' }: MenuCardPr
         <div className="flex items-center">
           <div className="flex-grow p-4 flex justify-between items-center">
             <h3 className="text-lg font-semibold text-purple-800">{title}</h3>
-            <ChevronRight className="text-purple-600" />
+            {isRTL ? (
+              <ChevronLeft className="text-purple-600" />
+            ) : (
+              <ChevronRight className="text-purple-600" />
+            )}
           </div>
         </div>
       </Link>
@@ -61,7 +68,11 @@ export function MenuCard({ title, image, href, variant = 'default' }: MenuCardPr
       )}
       <div className="p-3 flex-1 flex justify-between items-center">
         <h2 className="text-md font-semibold text-purple-800">{title}</h2>
-        <ChevronRight className="text-purple-600" />
+        {isRTL ? (
+          <ChevronLeft className="text-purple-600" />
+        ) : (
+          <ChevronRight className="text-purple-600" />
+        )}
       </div>
     </Link>
   );

@@ -5,6 +5,8 @@ import { QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getNextAvailableDates } from '@/lib/date';
 import { sanityFetch } from '@/sanity/lib/client';
 import { Locale } from '@/i18n/routing';
+import { MenuLayout } from '@/components/layout/MenuLayout';
+import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { WeeklyMealCard } from './weekly-meal-card';
 
 async function getWeeklyMeals(language: Locale): Promise<QueryWeeklyMealsResult | null> {
@@ -31,7 +33,7 @@ export default async function WeeklySpecialsPage({ params }: WeeklySpecialsPageP
   const weeklyMeals = await getWeeklyMeals(locale);
 
   if (!weeklyMeals) {
-    return <div>No weekly meals found</div>;
+    return <div>{t('noWeeklyMealsFound')}</div>;
   }
 
   const nextTwoDates = getNextAvailableDates(
@@ -40,18 +42,21 @@ export default async function WeeklySpecialsPage({ params }: WeeklySpecialsPageP
   );
 
   return (
-    <section className="container mx-auto px-4 py-6 flex flex-col gap-4">
-      {nextTwoDates.map((date, dateIndex) => (
-        <div key={date.toISOString()} className="flex flex-col gap-2">
-          <h2 className="text-xl font-bold text-purple-600 capitalize">{formatDate(date)}</h2>
-          {weeklyMeals
-            .filter((meal) => areDatesEqual(meal.availableDate || '', date))
-            .map((meal) => (
-              <WeeklyMealCard key={meal._id} meal={meal} isReversed={dateIndex % 2 === 0} />
-            ))}
-        </div>
-      ))}
-      <p className="text-center text-gray-600">{t('orderInAdvance')}</p>
-    </section>
+    <div className="min-h-screen bg-purple-10">
+      <NavigationMenuHeader title={t('title')} />
+      <MenuLayout>
+        {nextTwoDates.map((date, dateIndex) => (
+          <div key={date.toISOString()} className="flex flex-col gap-2">
+            <h2 className="text-xl font-bold text-purple-600 capitalize">{formatDate(date)}</h2>
+            {weeklyMeals
+              .filter((meal) => areDatesEqual(meal.availableDate || '', date))
+              .map((meal) => (
+                <WeeklyMealCard key={meal._id} meal={meal} isReversed={dateIndex % 2 === 0} />
+              ))}
+          </div>
+        ))}
+        <p className="text-center text-gray-600">{t('orderInAdvance')}</p>
+      </MenuLayout>
+    </div>
   );
 }

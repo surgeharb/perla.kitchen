@@ -1,6 +1,6 @@
 {
   "MainHeader": {
-    "OurMenu": "قائمتنا"
+    "ourMenu": "قائمتنا"
   },
   "LocaleLayout": {
     "title": "مطبخ بيرلا - أذواق لبنانية حقيقية",
@@ -14,6 +14,8 @@
     "name": "مطبخ بيرلا"
   },
   "WeeklySpecials": {
-    "orderInAdvance": "يرجى الطلب قبل يوم واحد على الأقل"
+    "title": "أطباق الأسبوع",
+    "orderInAdvance": "يرجى الطلب قبل يوم واحد على الأقل",
+    "noWeeklyMealsFound": "لا يوجد أطباق للأسبوع"
   }
 }

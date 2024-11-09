@@ -7,6 +7,7 @@ import { areDatesEqual, getDayName, getNextAvailableDates, unformatDate } from '
 import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { MenuCard } from '@/components/menu-card';
 import { Locale } from '@/i18n/routing';
+import { MenuLayout } from '@/components/layout/MenuLayout';
 
 const getWeeklyMeals = async (language: Locale): Promise<QueryWeeklyMealsResult | null> => {
   const weeklyMeals = await sanityFetch({
@@ -33,7 +34,7 @@ type MenuListPageProps = {
 
 export default async function MenuListPage({ params }: MenuListPageProps) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'MainHeader' });
+  const t = await getTranslations({ locale });
 
   const [menus, weeklyMeals] = await Promise.all([getMenus(locale), getWeeklyMeals(locale)]);
 
@@ -50,8 +51,8 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
 
   return (
     <>
-      <NavigationMenuHeader title={t('OurMenu')} skipBack size="large" />
-      <main className="container mx-auto p-4 flex flex-col gap-4">
+      <NavigationMenuHeader title={t('MainHeader.ourMenu')} skipBack size="large" />
+      <MenuLayout>
         {currentDateMeals.length > 0 && (
           <MenuCard
             key="weekly-specials"
@@ -70,7 +71,7 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
             />
           ))}
         </div>
-      </main>
+      </MenuLayout>
     </>
   );
 }
