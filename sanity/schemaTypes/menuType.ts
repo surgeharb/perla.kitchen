@@ -1,5 +1,6 @@
 import { MenuIcon } from '@sanity/icons';
 import { defineField, defineType } from 'sanity';
+import { orderRankField, orderRankOrdering } from '@sanity/orderable-document-list';
 
 export const menuType = defineType({
   name: 'menu',
@@ -19,6 +20,7 @@ export const menuType = defineType({
       };
     },
   },
+  orderings: [orderRankOrdering],
   fields: [
     defineField({
       name: 'title',
@@ -48,5 +50,6 @@ export const menuType = defineType({
         hotspot: true,
       },
     }),
+    orderRankField({ type: 'menu', newItemPosition: 'before' }),
   ],
 });

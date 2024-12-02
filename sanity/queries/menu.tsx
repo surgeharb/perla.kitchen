@@ -1,6 +1,6 @@
 import { groq } from 'next-sanity';
 
-export const QueryMenus = groq`*[_type == "menu"] {
+export const QueryMenus = groq`*[_type == "menu"]|order(orderRank) {
   _id,
   "title": title[_key == $language][0].value,
   slug,
