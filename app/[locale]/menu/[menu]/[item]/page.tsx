@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { Utensils } from 'lucide-react';
+import { Utensils, Sparkles } from 'lucide-react';
 import { buildSanityImageUrl, sanityFetch } from '@/sanity/lib/client';
 import {
   QueryMenuItem,
@@ -166,7 +166,7 @@ export default async function ItemDetailsPage(props: {
                     <Label
                       key={serving.size}
                       htmlFor={serving.size ?? ''}
-                      className="relative flex items-center justify-between p-3 rounded-lg border-2 border-purple-100 has-[input:checked]:border-purple-600 has-[input:checked]:bg-purple-50 transition-colors">
+                      className="relative flex items-center justify-between p-3 rounded-lg border-2 border-purple-100 has-[input:checked]:border-purple-600 has-[input:checked]:bg-purple-50 transition-colors cursor-pointer">
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value={serving.size ?? ''} id={serving.size ?? ''} />
                         <div className="flex items-center gap-2">
@@ -185,8 +185,9 @@ export default async function ItemDetailsPage(props: {
                         </span>
                       </div>
                       {!!serving.originalPrice && !!serving.price && (
-                        <div className="absolute top-[-8px] right-[-8px] opacity-90">
-                          <span className="rounded-sm bg-purple-200 px-2 py-0.5 text-xs text-purple-600">
+                        <div className="absolute top-[-12px] right-[-8px]">
+                          <span className="rounded-sm bg-purple-600/95 px-2 py-0.5 text-xs text-white flex items-center gap-1">
+                            <Sparkles className="h-3 w-3 inline" />
                             Save{' '}
                             {Math.round(
                               ((serving.originalPrice - serving.price) / serving.originalPrice) *
