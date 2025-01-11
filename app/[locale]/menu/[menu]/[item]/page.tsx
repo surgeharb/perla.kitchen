@@ -17,9 +17,10 @@ import {
 } from '@/sanity.types';
 import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { Button } from '@/components/ui/button';
-import { Link, Locale } from '@/i18n/routing';
-
-const phoneNumber = '+34606466550';
+import { Locale } from '@/i18n/routing';
+import { OrderItemForm } from '@/components/forms/OrderItemForm';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 async function getMenuItemDetails(
   slug: string,
@@ -114,10 +115,6 @@ export default async function ItemDetailsPage(props: {
     },
   };
 
-  const orderNowMessage = encodeURIComponent(
-    `Hello! I would like to place an order for ${itemDetails.title}.`,
-  );
-
   return (
     <>
       <script
@@ -149,29 +146,34 @@ export default async function ItemDetailsPage(props: {
               )}
             </div>
             {!!itemDetails?.servingSizes?.length && (
-              <div className="flex flex-col gap-3">
-                {itemDetails.servingSizes.map((serving) => (
-                  <div
-                    key={serving.size}
-                    className="flex items-center justify-between p-3 rounded-lg border border-purple-100 hover:border-purple-300 transition-colors">
-                    <div className="flex items-center gap-2">
-                      <Utensils className="text-purple-600 h-5 w-5" />
-                      <span className="font-medium">{serving.size}</span>
-                    </div>
-                    <span className="text-lg font-semibold text-purple-600">{serving.price} €</span>
-                  </div>
-                ))}
-              </div>
+              <OrderItemForm itemTitle={itemDetails.title ?? ''} className="flex flex-col gap-4">
+                <RadioGroup
+                  name="serving-size"
+                  className="flex flex-col gap-3"
+                  defaultValue={itemDetails.servingSizes?.[0]?.size ?? ''}>
+                  {itemDetails.servingSizes.map((serving) => (
+                    <Label
+                      key={serving.size}
+                      htmlFor={serving.size ?? ''}
+                      className="flex items-center justify-between p-3 rounded-lg border border-purple-100 has-[input:checked]:border-purple-300 has-[input:checked]:bg-purple-50 transition-colors">
+                      <div className="flex items-center gap-2">
+                        <RadioGroupItem value={serving.size ?? ''} id={serving.size ?? ''} />
+                        <div className="flex items-center gap-2">
+                          <Utensils className="text-purple-600 h-5 w-5" />
+                          <span className="font-medium">{serving.size}</span>
+                        </div>
+                      </div>
+                      <span className="text-lg font-semibold text-purple-600">
+                        {serving.price} €
+                      </span>
+                    </Label>
+                  ))}
+                </RadioGroup>
+                <Button type="submit" variant="default" size="lg" className="w-full">
+                  Order Now
+                </Button>
+              </OrderItemForm>
             )}
-            <Link
-              href={`https://wa.me/${phoneNumber}?text=${orderNowMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full">
-              <Button variant="default" size="lg" className="w-full">
-                Order Now
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
