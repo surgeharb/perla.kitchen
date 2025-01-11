@@ -21,6 +21,7 @@ import { Locale } from '@/i18n/routing';
 import { OrderItemForm } from '@/components/forms/OrderItemForm';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 async function getMenuItemDetails(
   slug: string,
@@ -175,14 +176,18 @@ export default async function ItemDetailsPage(props: {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
+                        <span
+                          className={cn(
+                            'text-lg font-semibold',
+                            serving.originalPrice ? 'text-purple-600' : 'text-gray-800',
+                          )}>
+                          {serving.price} €
+                        </span>
                         {!!serving.originalPrice && !!serving.price && (
-                          <span className="text-sm text-gray-500 line-through">
+                          <span className="text-lg text-gray-500 line-through">
                             {serving.originalPrice} €
                           </span>
                         )}
-                        <span className="text-lg font-semibold text-purple-600">
-                          {serving.price} €
-                        </span>
                       </div>
                       {!!serving.originalPrice && !!serving.price && (
                         <div className="absolute top-[-12px] right-[-8px]">
