@@ -89,7 +89,13 @@ export default async function ItemDetailsPage(props: {
     const weeklyMealWithItem = await getWeeklyMealWithItem(itemDetails._id, locale);
     if (weeklyMealWithItem) {
       itemDetails.description = weeklyMealWithItem.description;
-      itemDetails.servingSizes = [{ size: 'Weekly Special', price: weeklyMealWithItem.price }];
+      itemDetails.servingSizes = [
+        {
+          size: 'Weekly Special',
+          price: weeklyMealWithItem.price,
+          originalPrice: null,
+        },
+      ];
     }
   }
 
@@ -114,6 +120,11 @@ export default async function ItemDetailsPage(props: {
       price: itemDetails.servingSizes?.[0]?.price ?? 0,
     },
   };
+
+  const defaultServingSize =
+    itemDetails.servingSizes?.find((serving) => serving.originalPrice)?.size ??
+    itemDetails.servingSizes?.[0]?.size ??
+    '';
 
   return (
     <>
@@ -149,13 +160,13 @@ export default async function ItemDetailsPage(props: {
               <OrderItemForm itemTitle={itemDetails.title ?? ''} className="flex flex-col gap-4">
                 <RadioGroup
                   name="serving-size"
-                  className="flex flex-col gap-3"
-                  defaultValue={itemDetails.servingSizes?.[0]?.size ?? ''}>
+                  className="flex flex-col gap-4"
+                  defaultValue={defaultServingSize}>
                   {itemDetails.servingSizes.map((serving) => (
                     <Label
                       key={serving.size}
                       htmlFor={serving.size ?? ''}
-                      className="flex items-center justify-between p-3 rounded-lg border border-purple-100 has-[input:checked]:border-purple-300 has-[input:checked]:bg-purple-50 transition-colors">
+                      className="relative flex items-center justify-between p-3 rounded-lg border-2 border-purple-100 has-[input:checked]:border-purple-600 has-[input:checked]:bg-purple-50 transition-colors">
                       <div className="flex items-center gap-2">
                         <RadioGroupItem value={serving.size ?? ''} id={serving.size ?? ''} />
                         <div className="flex items-center gap-2">
@@ -163,9 +174,28 @@ export default async function ItemDetailsPage(props: {
                           <span className="font-medium">{serving.size}</span>
                         </div>
                       </div>
-                      <span className="text-lg font-semibold text-purple-600">
-                        {serving.price} €
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {!!serving.originalPrice && !!serving.price && (
+                          <span className="text-sm text-gray-500 line-through">
+                            {serving.originalPrice} €
+                          </span>
+                        )}
+                        <span className="text-lg font-semibold text-purple-600">
+                          {serving.price} €
+                        </span>
+                      </div>
+                      {!!serving.originalPrice && !!serving.price && (
+                        <div className="absolute top-[-8px] right-[-8px] opacity-90">
+                          <span className="rounded-sm bg-purple-200 px-2 py-0.5 text-xs text-purple-600">
+                            Save{' '}
+                            {Math.round(
+                              ((serving.originalPrice - serving.price) / serving.originalPrice) *
+                                100,
+                            )}
+                            %
+                          </span>
+                        </div>
+                      )}
                     </Label>
                   ))}
                 </RadioGroup>

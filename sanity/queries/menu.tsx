@@ -26,7 +26,8 @@ export const QueryMenuItem = groq`*[_type == "menuItem" && slug.current == $slug
   "description": description[_key == $language][0].value,
   servingSizes[] {
     size,
-    price
+    price,
+    originalPrice
   },
   image,
   menu -> {

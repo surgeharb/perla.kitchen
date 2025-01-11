@@ -60,6 +60,11 @@ export const menuItemType = defineType({
               type: 'number',
               validation: (Rule) => Rule.required(),
             },
+            {
+              name: 'originalPrice',
+              title: 'Original Price',
+              type: 'number',
+            },
           ],
         },
       ],

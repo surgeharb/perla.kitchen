@@ -557,6 +557,13 @@
                   "type": "number"
                 },
                 "optional": true
+              },
+              "originalPrice": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "number"
+                },
+                "optional": true
               }
             },
             "rest": {
@@ -814,6 +821,13 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "orderRank": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }

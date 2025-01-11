@@ -111,6 +111,7 @@ export type MenuItem = {
   servingSizes?: Array<{
     size?: string;
     price?: number;
+    originalPrice?: number;
     _key: string;
   }>;
   menu?: {
@@ -160,6 +161,7 @@ export type Menu = {
     crop?: SanityImageCrop;
     _type: 'image';
   };
+  orderRank?: string;
 };
 
 export type Recipe = {
@@ -474,7 +476,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/queries/menu.tsx
 // Variable: QueryMenus
-// Query: *[_type == "menu"] {  _id,  "title": title[_key == $language][0].value,  slug,  image,  _updatedAt}
+// Query: *[_type == "menu"]|order(orderRank) {  _id,  "title": title[_key == $language][0].value,  slug,  image,  _updatedAt}
 export type QueryMenusResult = Array<{
   _id: string;
   title: string | null;
@@ -516,7 +518,7 @@ export type QueryMenuItemsResult = Array<{
   _updatedAt: string;
 }>;
 // Variable: QueryMenuItem
-// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  servingSizes[] {    size,    price  },  image,  menu -> {    "title": title[_key == $language][0].value  }}
+// Query: *[_type == "menuItem" && slug.current == $slug][0] {  _id,  "title": title[_key == $language][0].value,  "description": description[_key == $language][0].value,  servingSizes[] {    size,    price,    originalPrice  },  image,  menu -> {    "title": title[_key == $language][0].value  }}
 export type QueryMenuItemResult = {
   _id: string;
   title: string | null;
@@ -524,6 +526,7 @@ export type QueryMenuItemResult = {
   servingSizes: Array<{
     size: string | null;
     price: number | null;
+    originalPrice: number | null;
   }> | null;
   image: {
     asset?: {
@@ -597,9 +600,9 @@ export type QueryWeeklyMealWithItemResult = {
 import '@sanity/client';
 declare module '@sanity/client' {
   interface SanityQueries {
-    '*[_type == "menu"] {\n  _id,\n  "title": title[_key == $language][0].value,\n  slug,\n  image,\n  _updatedAt\n}': QueryMenusResult;
+    '*[_type == "menu"]|order(orderRank) {\n  _id,\n  "title": title[_key == $language][0].value,\n  slug,\n  image,\n  _updatedAt\n}': QueryMenusResult;
     '*[_type == "menuItem" && menu->slug.current == $menu] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  slug,\n  image,\n  menu -> {\n    "title": title[_key == $language][0].value\n  },\n  _updatedAt\n}': QueryMenuItemsResult;
-    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price\n  },\n  image,\n  menu -> {\n    "title": title[_key == $language][0].value\n  }\n}': QueryMenuItemResult;
+    '*[_type == "menuItem" && slug.current == $slug][0] {\n  _id,\n  "title": title[_key == $language][0].value,\n  "description": description[_key == $language][0].value,\n  servingSizes[] {\n    size,\n    price,\n    originalPrice\n  },\n  image,\n  menu -> {\n    "title": title[_key == $language][0].value\n  }\n}': QueryMenuItemResult;
     '*[_type == "weeklyMeal"] {\n  _id,\n  _updatedAt,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    "title": title[_key == $language][0].value,\n    "description": description[_key == $language][0].value,\n    image,\n    slug\n  }\n}': QueryWeeklyMealsResult;
     '*[_type == "weeklyMeal" && $itemId in menuItems[]._ref] | order(_updatedAt desc)[0] {\n  _id,\n  _updatedAt,\n  "description": description[_key == $language][0].value,\n  price,\n  availableDate,\n  menuItems[] -> {\n    _id,\n    "title": title[_key == $language][0].value,\n    "description": description[_key == $language][0].value,\n    image,\n    slug\n  }\n}': QueryWeeklyMealWithItemResult;
   }
