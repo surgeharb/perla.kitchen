@@ -38,7 +38,7 @@ export default function SubscriptionPage() {
             Subscribe to our monthly meal plan and get incredible value: Pay for just 3 weeks and
             enjoy a full month of delicious Lebanese cuisine!
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
             <div className="flex items-center gap-3 justify-center">
               <Check className="h-6 w-6 text-purple-600" />
               <span className="text-gray-700">Flexible Menu</span>
