@@ -51,17 +51,18 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
 
   return (
     <>
-      <NavigationMenuHeader title={t('MainHeader.ourMenu')} skipBack size="large" />
       <MenuLayout>
-        {currentDateMeals.length > 0 && (
-          <MenuCard
-            key="weekly-specials"
-            title={`${getDayName(nextWeeklyMealDay)}'s Menu`}
-            href={`/menu/weekly-specials`}
-            variant="banner"
-          />
-        )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <h2 className="text-2xl font-bold">{t('MainHeader.ourMenu')}</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {currentDateMeals.length > 0 && (
+            <MenuCard
+              key="weekly-specials"
+              className="col-span-full md:col-span-2"
+              title={`${getDayName(nextWeeklyMealDay)}'s Menu`}
+              href={`/menu/weekly-specials`}
+              variant="banner"
+            />
+          )}
           {menus.map((menu) => (
             <MenuCard
               key={menu._id}

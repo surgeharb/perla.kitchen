@@ -5,6 +5,7 @@ import { SanityImageSource } from '@sanity/image-url/lib/types/types';
 import { buildSanityImageUrl } from '@/sanity/lib/client';
 import { useIsRTL } from '@/hooks/useIsRTL';
 import { Link } from '@/i18n/routing';
+import { cn } from '@/lib/utils';
 
 const getMenuImage = (image: SanityImageSource) =>
   buildSanityImageUrl(image, { height: 300, width: 300 });
@@ -13,19 +14,23 @@ interface MenuCardProps {
   title: string | null;
   image?: SanityImageSource | null;
   variant?: 'default' | 'banner';
+  className?: string;
   href: string;
 }
 
-export function MenuCard({ title, image, href, variant = 'default' }: MenuCardProps) {
+export function MenuCard({ title, image, href, className, variant = 'default' }: MenuCardProps) {
   const isRTL = useIsRTL();
 
   if (variant === 'banner') {
     return (
       <Link
         href={href}
-        className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        className={cn(
+          'flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300',
+          className,
+        )}>
         <div className="flex-shrink-0 flex">
-          <div className="w-full h-32 relative">
+          <div className="w-full relative aspect-[2/0.96]">
             <Image
               src="/images/menu-banner.jpeg"
               alt="Weekly Menu"
@@ -36,7 +41,7 @@ export function MenuCard({ title, image, href, variant = 'default' }: MenuCardPr
             />
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex-1 flex items-center">
           <div className="flex-grow p-4 flex justify-between items-center">
             <h3 className="text-lg font-semibold text-purple-800">{title}</h3>
             {isRTL ? (
@@ -53,7 +58,10 @@ export function MenuCard({ title, image, href, variant = 'default' }: MenuCardPr
   return (
     <Link
       href={href}
-      className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+      className={cn(
+        'flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300',
+        className,
+      )}>
       {!!image && (
         <div className="relative aspect-square w-full">
           <Image
