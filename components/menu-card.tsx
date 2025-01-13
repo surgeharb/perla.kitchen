@@ -32,11 +32,11 @@ export function MenuCard({ title, image, href, className, variant = 'default' }:
         <div className="flex-shrink-0 flex">
           <div className="w-full relative aspect-[2/0.96]">
             <Image
-              src="/images/menu-banner.jpeg"
+              src="/images/menu-banner-mixed.png"
               alt="Weekly Menu"
               layout="fill"
               objectFit="cover"
-              objectPosition="center 35%"
+              objectPosition="center 33%"
               priority
             />
           </div>
