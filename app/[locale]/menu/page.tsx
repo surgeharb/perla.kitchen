@@ -1,10 +1,10 @@
 import React from 'react';
+import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { sanityFetch } from '@/sanity/lib/client';
 import { QueryMenus, QueryWeeklyMeals } from '@/sanity/queries/menu';
 import { QueryMenusResult, QueryWeeklyMealsResult } from '@/sanity.types';
 import { areDatesEqual, getDayName, getNextAvailableDates, unformatDate } from '@/lib/date';
-import { NavigationMenuHeader } from '@/components/layout/NavigationMenuHeader';
 import { MenuCard } from '@/components/menu-card';
 import { Locale } from '@/i18n/routing';
 import { MenuLayout } from '@/components/layout/MenuLayout';
@@ -51,6 +51,14 @@ export default async function MenuListPage({ params }: MenuListPageProps) {
 
   return (
     <>
+      <div className="bg-purple-100 p-3">
+        <p className="text-md text-center">
+          🎉{' '}
+          <Link href="/subscription" className="text-purple-500 underline">
+            Get 1 week of FREE meals -{'>'}
+          </Link>
+        </p>
+      </div>
       <MenuLayout>
         <h2 className="text-2xl font-bold">{t('MainHeader.ourMenu')}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
