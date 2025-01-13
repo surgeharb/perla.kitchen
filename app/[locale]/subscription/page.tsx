@@ -36,16 +36,17 @@ export default function SubscriptionPage() {
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Subscribe to our monthly meal plan and get incredible value: Pay for just 3 weeks and
-            enjoy a full month of delicious Lebanese cuisine!
+            enjoy a full month of delicious <span className="text-purple-600">Lebanese</span>{' '}
+            cuisine!
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
             <div className="flex items-center gap-3 justify-center">
               <Check className="h-6 w-6 text-purple-600" />
-              <span className="text-gray-700">Flexible Menu</span>
+              <span className="text-gray-700">16 Meals in Total</span>
             </div>
             <div className="flex items-center gap-3 justify-center">
               <Check className="h-6 w-6 text-purple-600" />
-              <span className="text-gray-700">Fresh Weekly Meals</span>
+              <span className="text-gray-700">4 Fresh Weekly Meals</span>
             </div>
             <div className="flex items-center gap-3 justify-center">
               <Check className="h-6 w-6 text-purple-600" />
@@ -74,7 +75,7 @@ export default function SubscriptionPage() {
                   <h3 className="font-semibold mb-3">What&apos;s Included:</h3>
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-purple-600" />4 full weeks of meals
+                      <Check className="h-4 w-4 text-purple-600" />4 meals per week
                     </li>
                     <li className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-purple-600" />
@@ -110,7 +111,7 @@ export default function SubscriptionPage() {
                 className="w-full"
                 href={`https://wa.me/${phoneNumber}?text=${subscribeMessage}`}>
                 <Button className="w-full bg-purple-600 hover:bg-purple-700 text-md py-6">
-                  Subscribe Now - Get 1 Week Free
+                  Subscribe Now and Save
                 </Button>
               </Link>
             </CardFooter>
@@ -206,21 +207,29 @@ export default function SubscriptionPage() {
                 you&apos;re paying only €35 per week - saving 27% overall.
               </AccordionContent>
             </AccordionItem>
+            {/** how many meals are included? */}
             <AccordionItem value="item-2">
-              <AccordionTrigger>When am I billed?</AccordionTrigger>
+              <AccordionTrigger>How many meals are included?</AccordionTrigger>
               <AccordionContent>
-                You&apos;ll be billed €140 at the start of each monthly subscription period. This
-                covers your entire month of meals, including your free week.
+                You will receive 16 meals in total, 4 fresh weekly meals.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-              <AccordionTrigger>Can I pause or cancel my subscription?</AccordionTrigger>
+              <AccordionTrigger>When am I billed?</AccordionTrigger>
               <AccordionContent>
-                You can cancel your subscription at any time. However, you will be billed for the
-                current month. Pausing your subscription is not possible at the moment.
+                You&apos;ll be billed €140 at the start of each monthly subscription period. This
+                covers your entire month of meals, including your free week. The subscription period
+                is 4 weeks (28 days).
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
+              <AccordionTrigger>Can I pause or cancel my subscription?</AccordionTrigger>
+              <AccordionContent>
+                Yes, you can cancel your subscription at any time. However, you will be billed for
+                the current month. Pausing your subscription is not possible at the moment.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-5">
               <AccordionTrigger>What&apos;s included in the meals?</AccordionTrigger>
               <AccordionContent>
                 Each delivery includes a complete Lebanese meal, freshly prepared and delivered to
